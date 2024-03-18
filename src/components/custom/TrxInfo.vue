@@ -8,7 +8,6 @@
         <AuthTable />
       </div>
     </div>
-    <p class="text-2xl text-green text-center">Your transaction has been signed correctly!</p>
   </div>
 </template>
 
