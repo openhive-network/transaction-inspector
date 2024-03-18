@@ -8,9 +8,7 @@
         <DialogTitle>Check your transaction</DialogTitle>
         <DialogDescription>Simply paste your username and transaction.</DialogDescription>
       </DialogHeader>
-      <Suspense>
-        <Form class="mt-4" />
-      </Suspense>
+      <Form class="mt-4" />
     </DialogContent>
   </Dialog>
 </template>

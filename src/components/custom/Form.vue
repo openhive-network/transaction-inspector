@@ -8,7 +8,11 @@
       <Label>Transaction (JSON format)</Label>
       <Textarea placeholder="Provide your transaction" class="min-h-64 max-h-64" v-model="transaction" />
     </div>
-    <Button @click="getEntireWaxInformations">Submit</Button>
+    <DialogFooter>
+      <DialogClose as-child>
+        <Button @click="getEntireWaxInformations">Submit</Button>
+      </DialogClose>
+    </DialogFooter>
   </div>
 </template>
 
@@ -19,7 +23,7 @@ import { Label } from '../ui/label';
 import { Button } from '../ui/button';
 import { useWaxStore } from '@/store/wax';
 import type { ApiTransaction } from '@hive/wax';
-import { inject, watchEffect } from 'vue';
+import { inject } from 'vue';
 import type { TWaxAccountInformations } from '@/plugins/wax';
 
 const store = useWaxStore();

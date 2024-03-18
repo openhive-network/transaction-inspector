@@ -67,7 +67,7 @@ class WaxAccountInformations {
       { type: 'posting', auths: accountToCheck.accounts[0].posting.account_auths },
     ]
       .filter(acc => acc.auths.length > 0)
-      .map(acc => `${acc.auths.map(node => node[0]).join(', ')}\n`);
+      .map(acc => acc.auths.map(node => node[0]));
   }
 }
 
