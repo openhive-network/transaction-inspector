@@ -16,6 +16,10 @@ class WaxAccountInformations {
     return signatureKeys.map(key => (key.startsWith('STM') ? `${key}` : `STM${key}`));
   }
 
+  async getSignaturesFor(transaction: ApiTransaction): Promise<string[]> {
+    return transaction.signatures;
+  }
+
   async accountToCheck(account: string): Promise<IAccountType> {
     await this.requireChain();
 

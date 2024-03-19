@@ -21,7 +21,7 @@
       <TableBody>
         <TableRow v-if="wax.keys.value.length > 0">
           <TableCell
-            v-for="(signature, index) in ['bhklsdvqhvfqvfq']"
+            v-for="(signature, index) in wax.signatures.value"
             :key="index"
             class="transition-colors hover:bg-accent hover:cursor-pointer"
             @click="copy(signature)">

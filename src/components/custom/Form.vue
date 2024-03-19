@@ -25,6 +25,7 @@ import { useWaxStore } from '@/store/wax';
 import type { ApiTransaction } from '@hive/wax';
 import { inject } from 'vue';
 import type { TWaxAccountInformations } from '@/plugins/wax';
+import { DialogClose, DialogFooter } from '../ui/dialog';
 
 const store = useWaxStore();
 const username = defineModel<string>('username');

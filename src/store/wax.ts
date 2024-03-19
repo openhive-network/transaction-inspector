@@ -9,6 +9,7 @@ export const useWaxStore = defineStore('wax', {
     signedBy: [] as string[],
     refs: [] as string[],
     correctlySigned: false as boolean,
+    signatures: [] as string[],
   }),
 
   actions: {
@@ -17,6 +18,7 @@ export const useWaxStore = defineStore('wax', {
       this.accounts = await wax.getAccountAuthsFor(username);
       this.signedBy = await wax.getKeyTypeFor(username, this.keys[0]);
       this.refs = await wax.getAccountsKeyReferencesFor(transaction);
+      this.signatures = await wax.getSignaturesFor(transaction);
       this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
     },
   },
