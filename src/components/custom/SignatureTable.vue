@@ -1,11 +1,11 @@
 <template>
   <div class="flex flex-col">
-    <span v-if="wax.correctlySigned" class="text-2xl text-green p-4 text-center rounded-sm border-2 border-green bg-green60">
-      Your transaction is valid.
-    </span>
-    <span v-else class="text-2xl text-destructive p-4 text-center rounded-sm border-2 border-destructive bg-red60">
-      Your transaction is invalid.
-    </span>
+    <div v-if="wax.keys.value.length > 0">
+      <p v-if="wax.correctlySigned" class="text-2xl text-green p-4 text-center rounded-sm border-2 border-green bg-green60">
+        Your transaction is valid.
+      </p>
+      <p v-else class="text-2xl text-destructive p-4 text-center rounded-sm border-2 border-destructive bg-red60">Your transaction is invalid.</p>
+    </div>
     <Table class="mt-16">
       <TableCaption>Key informations.</TableCaption>
       <TableHeader>
@@ -14,8 +14,14 @@
           <TableHead class="text-lg">HF26</TableHead>
           <TableHead class="text-lg">Public key</TableHead>
           <TableHead class="text-lg">Accounts</TableHead>
-          <TableHead class="text-lg">Signed by</TableHead>
-          <TableHead class="text-lg">Satisfied</TableHead>
+          <TableHead class="text-lg text-center">
+            Authorities
+            <hr class="my-2" />
+            <div class="flex justify-between">
+              <span class="text-lg">Signed by</span>
+              <span class="text-lg">Satisfied</span>
+            </div>
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -48,14 +54,9 @@
             v-for="(signer, index) in wax.signedBy.value"
             :key="index"
             class="max-w-[100px] text-ellipsis overflow-hidden hover:overflow-visible">
-            {{ `${signer}\n` }}
-            <hr v-if="wax.signedBy.value.length > 1" class="my-3" />
-          </TableCell>
-          <TableCell
-            v-for="(signer, index) in wax.signedBy.value"
-            :key="index"
-            class="max-w-[100px] text-ellipsis overflow-hidden hover:overflow-visible">
-            {{ `${signer}\n` }}
+            <div class="flex justify-between px-3">
+              <span>{{ `${signer}\n` }}</span> <span>{{ `${signer}\n` }}</span>
+            </div>
             <hr v-if="wax.signedBy.value.length > 1" class="my-3" />
           </TableCell>
         </TableRow>
