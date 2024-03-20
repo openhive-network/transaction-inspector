@@ -12,6 +12,7 @@ export const useWaxStore = defineStore('wax', {
     correctlySigned: Boolean as unknown as boolean,
     id: '' as string,
     sigDigest: '' as string,
+    accountName: '' as string,
   }),
 
   actions: {
@@ -24,6 +25,7 @@ export const useWaxStore = defineStore('wax', {
       this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
       this.id = await wax.getTransactionIdFor(transaction);
       this.sigDigest = await wax.getSigDigestFor(transaction);
+      this.accountName = username;
     },
   },
 });
