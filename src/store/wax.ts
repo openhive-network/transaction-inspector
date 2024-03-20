@@ -5,11 +5,13 @@ import { defineStore } from 'pinia';
 export const useWaxStore = defineStore('wax', {
   state: () => ({
     keys: [] as string[],
-    accounts: [] as string[],
+    accounts: [] as string[][],
     signedBy: [] as string[],
     refs: [] as string[],
-    correctlySigned: false as boolean,
     signatures: [] as string[],
+    correctlySigned: Boolean as unknown as boolean,
+    id: '' as string,
+    sigDigest: '' as string,
   }),
 
   actions: {
@@ -20,6 +22,8 @@ export const useWaxStore = defineStore('wax', {
       this.refs = await wax.getAccountsKeyReferencesFor(transaction);
       this.signatures = await wax.getSignaturesFor(transaction);
       this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
+      this.id = await wax.getTransactionIdFor(transaction);
+      this.sigDigest = await wax.getSigDigestFor(transaction);
     },
   },
 });

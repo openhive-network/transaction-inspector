@@ -9,6 +9,20 @@ class WaxAccountInformations {
     if (typeof this.chain === 'undefined') this.chain = await createHiveChain();
   }
 
+  async getTransactionIdFor(transaction: ApiTransaction): Promise<string> {
+    await this.requireChain();
+    return this.chain.TransactionBuilder.fromApi(transaction).id;
+  }
+
+  async getSigDigestFor(transaction: ApiTransaction): Promise<string> {
+    await this.requireChain();
+    return this.chain.TransactionBuilder.fromApi(transaction).sigDigest;
+  }
+
+  // async getHashFor(transaction: ApiTransaction): Promise<string> {
+  //   await this.requireChain();
+  // }
+
   async getNormalizeKeysFor(transaction: ApiTransaction): Promise<string[]> {
     await this.requireChain();
 
@@ -60,7 +74,7 @@ class WaxAccountInformations {
       .filter(el => el.length > 0);
   }
 
-  async getAccountAuthsFor(account: string): Promise<string[]> {
+  async getAccountAuthsFor(account: string): Promise<string[][]> {
     await this.requireChain();
 
     const accountToCheck = await this.accountToCheck(account);
