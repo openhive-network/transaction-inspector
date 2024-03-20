@@ -14,6 +14,7 @@ export const useWaxStore = defineStore('wax', {
     id: '',
     sigDigest: '',
     accountName: '',
+    satisfied: '',
   }),
 
   actions: {
@@ -26,6 +27,7 @@ export const useWaxStore = defineStore('wax', {
       this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
       this.id = await wax.getTransactionIdFor(transaction);
       this.sigDigest = await wax.getSigDigestFor(transaction);
+      this.satisfied = await wax.compareSignatures(username, transaction);
       this.accountName = username;
     },
 

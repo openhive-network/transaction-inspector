@@ -1,5 +1,5 @@
-import { ApiTransaction, type IHiveChainInterface, createHiveChain } from '@hive/wax';
-import { EPackType, type IAccountType, type TVerifyAuthority } from './types.js';
+import { ApiTransaction, type IHiveChainInterface, createHiveChain, transaction } from '@hive/wax';
+import { EPackType, type IAccountType, type TRequiredSignatures, type TVerifyAuthority } from './types.js';
 import type { App } from 'vue';
 
 class WaxAccountInformations {
@@ -18,10 +18,6 @@ class WaxAccountInformations {
     await this.requireChain();
     return this.chain.TransactionBuilder.fromApi(transaction).sigDigest;
   }
-
-  // async getHashFor(transaction: ApiTransaction): Promise<string> {
-  //   await this.requireChain();
-  // }
 
   async getNormalizeKeysFor(transaction: ApiTransaction): Promise<string[]> {
     await this.requireChain();
@@ -72,6 +68,26 @@ class WaxAccountInformations {
     ]
       .map(acc => (acc.key === transactionKey ? acc.type : ''))
       .filter(el => el.length > 0);
+  }
+  async getRequiredSignatures(transaction: ApiTransaction): Promise<string[]> {
+    const transactionKeys = await this.getNormalizeKeysFor(transaction);
+    return (
+      await this.chain.extend<TRequiredSignatures>().api.database_api.get_required_signatures({
+        trx: transaction,
+        available_keys: transactionKeys,
+      })
+    ).keys;
+  }
+
+  async compareSignatures(account: string, transaction: ApiTransaction): Promise<any> {
+    const accountToCheck = await this.accountToCheck(account);
+    const requiredSignatures = await this.getRequiredSignatures(transaction);
+
+    for (let i = 0; i < requiredSignatures.length; ++i) {
+      if (requiredSignatures[i] === accountToCheck.accounts[0].owner.key_auths[0][0]) return 'owner';
+      else if (requiredSignatures[i] === accountToCheck.accounts[0].active.key_auths[0][0]) return 'active';
+      else if (requiredSignatures[i] === accountToCheck.accounts[0].posting.key_auths[0][0]) return 'posting';
+    }
   }
 
   async getAccountAuthsFor(account: string): Promise<string[][]> {

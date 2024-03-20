@@ -60,7 +60,15 @@
           <TableCell>
             <div v-for="(signer, index) in wax.signedBy.value" :key="index">
               <div class="flex justify-between px-3">
-                <span>{{ `${signer}\n` }}</span> <span>{{ `${signer}\n` }}</span>
+                <span>{{ `${signer}\n` }}</span>
+                <div>
+                  <span v-if="signer === wax.satisfied.value">
+                    <svg-icon class="ml-2" type="mdi" :path="mdiCheck" width="16" height="16" />
+                  </span>
+                  <span v-else>
+                    <svg-icon class="ml-2" type="mdi" :path="mdiClose" width="16" height="16" />
+                  </span>
+                </div>
               </div>
               <hr v-if="wax.signedBy.value.length > 1" class="my-3" />
             </div>
@@ -74,7 +82,7 @@
 <script setup lang="ts">
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useWaxStore } from '@/store/wax';
-import { mdiClipboardMultipleOutline } from '@mdi/js';
+import { mdiClipboardMultipleOutline, mdiCheck, mdiClose } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { storeToRefs } from 'pinia';
 
