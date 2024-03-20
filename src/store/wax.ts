@@ -9,10 +9,10 @@ export const useWaxStore = defineStore('wax', {
     signedBy: [] as string[],
     refs: [] as string[],
     signatures: [] as string[],
-    correctlySigned: Boolean as unknown as boolean,
-    id: '' as string,
-    sigDigest: '' as string,
-    accountName: '' as string,
+    correctlySigned: false,
+    id: '',
+    sigDigest: '',
+    accountName: '',
   }),
 
   actions: {
