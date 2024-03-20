@@ -1,3 +1,4 @@
+import { toast } from '@/components/ui/toast';
 import type { TWaxAccountInformations } from '@/plugins/wax';
 import { ApiTransaction } from '@hive/wax';
 import { defineStore } from 'pinia';
@@ -26,6 +27,21 @@ export const useWaxStore = defineStore('wax', {
       this.id = await wax.getTransactionIdFor(transaction);
       this.sigDigest = await wax.getSigDigestFor(transaction);
       this.accountName = username;
+    },
+
+    async copy(string: string): Promise<void> {
+      try {
+        await navigator.clipboard.writeText(string);
+        toast({
+          title: 'Copied to clipboard!',
+          description: string.length > 30 ? `${string.substring(0, 30)}...` : string,
+        });
+      } catch (error: any) {
+        toast({
+          title: 'Failed to copy',
+          variant: 'destructive',
+        });
+      }
     },
   },
 });

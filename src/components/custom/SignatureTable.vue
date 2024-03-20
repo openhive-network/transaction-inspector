@@ -30,10 +30,10 @@
             v-for="(signature, index) in wax.signatures.value"
             :key="index"
             class="transition-colors hover:bg-accent hover:cursor-pointer"
-            @click="copy(signature)">
+            @click="waxStore.copy(signature)">
             <span class="flex justify-between">
               {{ `${signature.substring(0, 5)}...${signature.substring(signature.length - 5)}\n` }}
-              <svg-icon type="mdi" :path="isCopied ? mdiCheck : mdiClipboardMultipleOutline" width="16" height="16" />
+              <svg-icon type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
             </span>
           </TableCell>
           <TableCell> a </TableCell>
@@ -41,10 +41,10 @@
             v-for="(key, index) in wax.keys.value"
             :key="index"
             class="transition-colors pb-5 hover:bg-accent hover:cursor-pointer"
-            @click="copy(key)">
+            @click="waxStore.copy(key)">
             <span class="flex justify-between">
               {{ `${key.substring(0, 5)}...${key.substring(key.length - 5)}\n` }}
-              <svg-icon type="mdi" :path="isCopied ? mdiCheck : mdiClipboardMultipleOutline" width="16" height="16" />
+              <svg-icon type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
             </span>
           </TableCell>
           <TableCell v-for="(account, index) in wax.accounts.value" :key="index" class="max-w-[100px] text-ellipsis overflow-hidden">
@@ -68,27 +68,10 @@
 <script setup lang="ts">
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useWaxStore } from '@/store/wax';
-import { mdiCheck, mdiClipboardMultipleOutline } from '@mdi/js';
+import { mdiClipboardMultipleOutline } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
-import { useToast } from '../ui/toast';
 import { storeToRefs } from 'pinia';
 
-const { toast } = useToast();
 const waxStore = useWaxStore();
 const wax = storeToRefs(waxStore);
-
-const copy = async (string: string): Promise<void> => {
-  try {
-    await navigator.clipboard.writeText(string);
-    toast({
-      title: 'Copied to clipboard!',
-      description: string.length > 30 ? `${string.substring(0, 30)}...` : string,
-    });
-  } catch (error: any) {
-    toast({
-      title: 'Failed to copy',
-      variant: 'destructive',
-    });
-  }
-};
 </script>
