@@ -80,6 +80,10 @@ const wax = storeToRefs(waxStore);
 const copy = async (string: string): Promise<void> => {
   try {
     await navigator.clipboard.writeText(string);
+    toast({
+      title: 'Copied to clipboard!',
+      description: string.length > 30 ? `${string.substring(0, 30)}...` : string,
+    });
   } catch (error: any) {
     toast({
       title: 'Failed to copy',
