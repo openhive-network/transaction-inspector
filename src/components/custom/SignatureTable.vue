@@ -26,38 +26,44 @@
       </TableHeader>
       <TableBody>
         <TableRow v-if="wax.keys.value.length > 0">
-          <TableCell
-            v-for="(signature, index) in wax.signatures.value"
-            :key="index"
-            class="transition-colors hover:bg-accent hover:cursor-pointer"
-            @click="waxStore.copy(signature)">
-            <span class="flex justify-between">
-              {{ `${signature.substring(0, 5)}...${signature.substring(signature.length - 5)}\n` }}
-              <svg-icon type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
+          <TableCell>
+            <span
+              v-for="(signature, index) in wax.signatures.value"
+              :key="index"
+              class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
+              @click="waxStore.copy(signature)">
+              <span class="inline-flex items-center">
+                {{ `${signature.substring(0, 5)}...${signature.substring(signature.length - 5)}\n` }}
+                <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
+              </span>
+              <hr v-if="wax.signatures.value.length > 1" class="my-3" />
             </span>
           </TableCell>
           <TableCell> a </TableCell>
-          <TableCell
-            v-for="(key, index) in wax.keys.value"
-            :key="index"
-            class="transition-colors pb-5 hover:bg-accent hover:cursor-pointer"
-            @click="waxStore.copy(key)">
-            <span class="flex justify-between">
-              {{ `${key.substring(0, 5)}...${key.substring(key.length - 5)}\n` }}
-              <svg-icon type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
+          <TableCell>
+            <span
+              v-for="(key, index) in wax.keys.value"
+              :key="index"
+              class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
+              @click="waxStore.copy(key)">
+              <span class="inline-flex items-center">
+                {{ `${key.substring(0, 5)}...${key.substring(key.length - 5)}\n` }}
+                <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
+              </span>
+              <hr v-if="wax.keys.value.length > 1" class="my-3" />
             </span>
           </TableCell>
           <TableCell v-for="(account, index) in wax.accounts.value" :key="index" class="max-w-[100px] text-ellipsis overflow-hidden">
             <p v-for="(el, index) in account" :key="index">{{ el }}</p>
+            <hr v-if="wax.accounts.value.length > 1" class="my-3" />
           </TableCell>
-          <TableCell
-            v-for="(signer, index) in wax.signedBy.value"
-            :key="index"
-            class="max-w-[100px] text-ellipsis overflow-hidden hover:overflow-visible">
-            <div class="flex justify-between px-3">
-              <span>{{ `${signer}\n` }}</span> <span>{{ `${signer}\n` }}</span>
+          <TableCell>
+            <div v-for="(signer, index) in wax.signedBy.value" :key="index">
+              <div class="flex justify-between px-3">
+                <span>{{ `${signer}\n` }}</span> <span>{{ `${signer}\n` }}</span>
+              </div>
+              <hr v-if="wax.signedBy.value.length > 1" class="my-3" />
             </div>
-            <hr v-if="wax.signedBy.value.length > 1" class="my-3" />
           </TableCell>
         </TableRow>
       </TableBody>
