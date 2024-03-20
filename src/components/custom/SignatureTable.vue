@@ -13,7 +13,7 @@
           <TableHead class="text-lg">Signature</TableHead>
           <TableHead class="text-lg">HF26</TableHead>
           <TableHead class="text-lg">Public key</TableHead>
-          <TableHead class="text-lg">Accounts</TableHead>
+          <TableHead class="text-lg">Account auths</TableHead>
           <TableHead class="text-lg text-center">
             Authorities
             <hr class="my-2" />
