@@ -10,17 +10,17 @@
     </TableHeader>
     <TableBody>
       <TableRow v-if="wax.id.value.length > 0">
-        <TableCell>
-          <span>{{ `${wax.id.value.substring(0, 5)}...${wax.id.value.substring(wax.id.value.length - 5)}` }}</span>
-          <Button variant="ghost" size="icon" @click="copy(wax.id.value)">
+        <TableCell class="transition-colors hover:bg-accent hover:cursor-pointer" @click="copy(wax.id.value)">
+          <span class="flex justify-between">
+            {{ `${wax.id.value.substring(0, 5)}...${wax.id.value.substring(wax.id.value.length - 5)}` }}
             <svg-icon type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
-          </Button>
+          </span>
         </TableCell>
-        <TableCell>
-          <span>{{ `${wax.sigDigest.value.substring(0, 5)}...${wax.sigDigest.value.substring(wax.sigDigest.value.length - 5)}` }}</span>
-          <Button variant="ghost" size="icon" @click="copy(wax.sigDigest.value)">
+        <TableCell class="transition-colors hover:bg-accent hover:cursor-pointer" @click="copy(wax.sigDigest.value)">
+          <span class="flex justify-between">
+            {{ `${wax.sigDigest.value.substring(0, 5)}...${wax.sigDigest.value.substring(wax.sigDigest.value.length - 5)}` }}
             <svg-icon type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
-          </Button>
+          </span>
         </TableCell>
         <TableCell>
           <span id="3">3</span>
