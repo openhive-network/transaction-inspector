@@ -35,14 +35,9 @@ const wax = inject<TWaxAccountInformations>('wax')!;
 
 const getEntireWaxInformations = async () => {
   try {
-    console.log('waiting');
-    console.log(username.value);
-    console.log(transaction.value);
     await store.getEntireWaxInformations(wax, JSON.parse(String(transaction.value)) as ApiTransaction, username.value as string);
   } catch (error) {
     console.error(error);
-  } finally {
-    console.log('done');
   }
 };
 </script>

@@ -68,8 +68,7 @@
 <script setup lang="ts">
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useWaxStore } from '@/store/wax';
-import { inject } from 'vue';
-import { mdiCheck, mdiClose, mdiClipboardMultipleOutline } from '@mdi/js';
+import { mdiCheck, mdiClipboardMultipleOutline } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { useToast } from '../ui/toast';
 import { storeToRefs } from 'pinia';
@@ -78,16 +77,9 @@ const { toast } = useToast();
 const waxStore = useWaxStore();
 const wax = storeToRefs(waxStore);
 
-let isCopied = false;
-
 const copy = async (string: string): Promise<void> => {
   try {
     await navigator.clipboard.writeText(string);
-    isCopied = true;
-
-    setTimeout(() => {
-      isCopied = false;
-    }, 3000);
   } catch (error: any) {
     toast({
       title: 'Failed to copy',

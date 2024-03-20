@@ -21,6 +21,6 @@
 import TrxDialog from './components/custom/TrxDialog.vue';
 import SignatureTable from './components/custom/SignatureTable.vue';
 import TrxInfo from './components/custom/TrxInfo.vue';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from './components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card';
 import Toaster from '@/components/ui/toast/Toaster.vue';
 </script>
