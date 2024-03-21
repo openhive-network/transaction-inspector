@@ -61,13 +61,17 @@ class WaxAccountInformations {
 
     const accountToCheck = await this.accountToCheck(account);
 
-    return [
+    const signedBy = [
       { type: 'owner', key: accountToCheck.accounts[0].owner.key_auths[0][0] },
       { type: 'active', key: accountToCheck.accounts[0].active.key_auths[0][0] },
       { type: 'posting', key: accountToCheck.accounts[0].posting.key_auths[0][0] },
     ]
       .map(acc => (acc.key === transactionKey ? acc.type : ''))
       .filter(el => el.length > 0);
+
+    if (signedBy.length > 0) return signedBy;
+
+    return ['other'];
   }
   async getRequiredSignatures(transaction: ApiTransaction): Promise<string[]> {
     const transactionKeys = await this.getNormalizeKeysFor(transaction);
@@ -87,6 +91,7 @@ class WaxAccountInformations {
       if (requiredSignatures[i] === accountToCheck.accounts[0].owner.key_auths[0][0]) return 'owner';
       else if (requiredSignatures[i] === accountToCheck.accounts[0].active.key_auths[0][0]) return 'active';
       else if (requiredSignatures[i] === accountToCheck.accounts[0].posting.key_auths[0][0]) return 'posting';
+      else return 'other';
     }
   }
 
