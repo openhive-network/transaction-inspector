@@ -35,7 +35,8 @@ const wax = inject<TWaxAccountInformations>('wax')!;
 
 const getEntireWaxInformations = async () => {
   try {
-    await store.getEntireWaxInformations(wax, JSON.parse(String(transaction.value)) as ApiTransaction, username.value as string);
+    const parsedUsername = username.value?.startsWith('@') ? username.value.slice(1) : username.value;
+    await store.getEntireWaxInformations(wax, JSON.parse(String(transaction.value)) as ApiTransaction, parsedUsername as string);
   } catch (error) {
     console.error(error);
   }
