@@ -53,10 +53,15 @@
               <hr v-if="wax.keys.value.length > 1" class="my-3" />
             </span>
           </TableCell>
-          <TableCell v-for="(account, index) in wax.accounts.value" :key="index" class="max-w-[100px] text-ellipsis overflow-hidden">
+          <TableCell
+            v-if="wax.accounts.value.length !== 0"
+            v-for="(account, index) in wax.accounts.value"
+            :key="index"
+            class="max-w-[100px] text-ellipsis overflow-hidden">
             <p v-for="(el, index) in account" :key="index">{{ el }}</p>
             <hr v-if="wax.accounts.value.length > 1" class="my-3" />
           </TableCell>
+          <TableCell v-else>...</TableCell>
           <TableCell>
             <div v-for="(signer, index) in wax.signedBy.value" :key="index">
               <div class="flex justify-between px-3">
