@@ -4,8 +4,7 @@
     <TableHeader>
       <TableRow>
         <TableHead>Transaction ID</TableHead>
-        <TableHead class="text-center">Sig Digest</TableHead>
-        <TableHead>Transaction Hash</TableHead>
+        <TableHead>Sig Digest</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
@@ -25,12 +24,6 @@
               <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
             </span>
           </span>
-        </TableCell>
-        <TableCell>
-          <span id="3">3</span>
-          <Button variant="ghost" size="icon">
-            <svg-icon type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
-          </Button>
         </TableCell>
       </TableRow>
     </TableBody>
