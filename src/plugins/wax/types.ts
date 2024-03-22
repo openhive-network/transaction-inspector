@@ -35,6 +35,12 @@ export enum EPackType {
   HF26 = 'hf26',
 }
 
+export enum EAuthorityLevel {
+  POSTING,
+  ACTIVE,
+  OWNER,
+}
+
 export type TVerifyAuthority = {
   database_api: {
     verify_authority: TWaxApiRequest<IVerifyAuthorityRequest, IVerifyAuthorityResponse>;

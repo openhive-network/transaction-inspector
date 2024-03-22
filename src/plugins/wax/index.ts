@@ -1,5 +1,14 @@
-import { ApiTransaction, type IHiveChainInterface, createHiveChain, transaction } from '@hive/wax';
-import { EPackType, type IAccountType, type TRequiredSignatures, type TVerifyAuthority } from './types.js';
+import {
+  ApiAccount,
+  ApiAuthority,
+  ApiKeyAuth,
+  ApiTransaction,
+  type IHiveChainInterface,
+  type TAccountName,
+  createHiveChain,
+  transaction,
+} from '@hive/wax';
+import { EAuthorityLevel, EPackType, type IAccountType, type TRequiredSignatures, type TVerifyAuthority } from './types.js';
 import type { App } from 'vue';
 
 class WaxAccountInformations {
@@ -47,6 +56,34 @@ class WaxAccountInformations {
     ).valid;
   }
 
+  async isDirectlySigned(expectedSigner: TAccountName, expectedAuthorityLevel: EAuthorityLevel, transaction: ApiTransaction): Promise<boolean> {
+    const accounts = await this.accountToCheck(expectedSigner);
+    const keys = await this.getNormalizeKeysFor(transaction);
+
+    for (let i = 0; i < accounts.accounts.length; ++i) {
+      let authorityToVerify: ApiAuthority;
+      const account = accounts.accounts[i];
+
+      switch (expectedAuthorityLevel) {
+        case EAuthorityLevel.POSTING:
+          authorityToVerify = account.posting;
+          break;
+        case EAuthorityLevel.ACTIVE:
+          authorityToVerify = account.active;
+          break;
+        case EAuthorityLevel.OWNER:
+          authorityToVerify = account.owner;
+          break;
+        default:
+          throw new Error('Invalid authority level');
+      }
+
+      for (let i = 0; i < keys.length; ++i) return authorityToVerify.key_auths.some((auth: ApiKeyAuth) => auth['0'] === keys[i]);
+    }
+
+    return false;
+  }
+
   async getAccountsKeyReferencesFor(transaction: ApiTransaction): Promise<string[]> {
     await this.requireChain();
 
@@ -56,21 +93,22 @@ class WaxAccountInformations {
     return keyReferences.accounts[0];
   }
 
-  async getKeyTypeFor(account: string, transactionKey: string): Promise<string[]> {
+  async getAuthorityTypeFor(account: string, transactionKeys: string[]): Promise<string[]> {
     await this.requireChain();
 
     const accountToCheck = await this.accountToCheck(account);
 
-    const signedBy = [
-      { type: 'owner', key: accountToCheck.accounts[0].owner.key_auths[0][0] },
-      { type: 'active', key: accountToCheck.accounts[0].active.key_auths[0][0] },
-      { type: 'posting', key: accountToCheck.accounts[0].posting.key_auths[0][0] },
-    ]
-      .map(acc => (acc.key === transactionKey ? acc.type : ''))
-      .filter(el => el.length > 0);
+    for (let i = 0; i < transactionKeys.length; ++i) {
+      const signedBy = [
+        { type: 'owner', key: accountToCheck.accounts[0].owner.key_auths[0][0] },
+        { type: 'active', key: accountToCheck.accounts[0].active.key_auths[0][0] },
+        { type: 'posting', key: accountToCheck.accounts[0].posting.key_auths[0][0] },
+      ]
+        .map(acc => (acc.key === transactionKeys[i] ? acc.type : ''))
+        .filter(el => el.length > 0);
 
-    if (signedBy.length > 0) return signedBy;
-
+      if (signedBy.length > 0) return signedBy;
+    }
     return ['other'];
   }
   async getRequiredSignatures(transaction: ApiTransaction): Promise<string[]> {

@@ -65,7 +65,9 @@
           <TableCell>
             <div v-for="(signer, index) in wax.signedBy.value" :key="index">
               <div class="flex justify-between px-3">
-                <span>{{ `${signer}\n` }}</span>
+                <!-- <span>{{ `${signer}\n` }}</span> -->
+                <span v-if="wax.isDirectlySigned">Directly Signed</span>
+                <span v-else>?</span>
                 <div>
                   <span v-if="signer === wax.satisfied.value">
                     <svg-icon class="ml-2" type="mdi" :path="mdiCheck" width="16" height="16" />

@@ -1,5 +1,6 @@
 import { toast } from '@/components/ui/toast';
 import type { TWaxAccountInformations } from '@/plugins/wax';
+import { EAuthorityLevel } from '@/plugins/wax/types';
 import { ApiTransaction } from '@hive/wax';
 import { defineStore } from 'pinia';
 
@@ -15,13 +16,14 @@ export const useWaxStore = defineStore('wax', {
     sigDigest: '',
     accountName: '',
     satisfied: '',
+    isDirectlySigned: false,
   }),
 
   actions: {
     async getEntireWaxInformations(wax: TWaxAccountInformations, transaction: ApiTransaction, username: string): Promise<void> {
       this.keys = await wax.getNormalizeKeysFor(transaction);
       this.accounts = await wax.getAccountAuthsFor(username);
-      this.signedBy = await wax.getKeyTypeFor(username, this.keys[0]);
+      this.signedBy = await wax.getAuthorityTypeFor(username, this.keys);
       this.refs = await wax.getAccountsKeyReferencesFor(transaction);
       this.signatures = await wax.getSignaturesFor(transaction);
       this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
@@ -29,6 +31,7 @@ export const useWaxStore = defineStore('wax', {
       this.sigDigest = await wax.getSigDigestFor(transaction);
       this.satisfied = await wax.compareSignatures(username, transaction);
       this.accountName = username;
+      this.isDirectlySigned = await wax.isDirectlySigned(username, EAuthorityLevel.POSTING, transaction);
     },
 
     async copy(string: string): Promise<void> {
