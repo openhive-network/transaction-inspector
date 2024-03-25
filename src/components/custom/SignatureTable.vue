@@ -62,9 +62,7 @@
             <hr v-if="wax.accounts.value.length > 1" class="my-3" />
           </TableCell>
           <TableCell v-else>...</TableCell>
-          <TableCell>
-            {{ `@${wax.signedBy.value}` }}
-          </TableCell>
+          <TableCell> {{ `@${wax.signedBy.value}` }}</TableCell>
         </TableRow>
       </TableBody>
     </Table>

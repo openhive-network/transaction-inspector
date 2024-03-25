@@ -101,15 +101,15 @@ class WaxAccountInformations {
     const accountToCheck = await this.accountToCheck(account);
 
     for (let i = 0; i < transactionKeys.length; ++i) {
-      const signedBy = [
-        { type: 'owner', key: accountToCheck.accounts[0].owner.key_auths[0][0] },
-        { type: 'active', key: accountToCheck.accounts[0].active.key_auths[0][0] },
-        { type: 'posting', key: accountToCheck.accounts[0].posting.key_auths[0][0] },
+      const authType = [
+        { type: 'owner', key: accountToCheck.accounts[i].owner.key_auths[i][0] },
+        { type: 'active', key: accountToCheck.accounts[i].active.key_auths[i][0] },
+        { type: 'posting', key: accountToCheck.accounts[i].posting.key_auths[i][0] },
       ]
         .map(acc => (acc.key === transactionKeys[i] ? acc.type : ''))
         .filter(el => el.length > 0);
 
-      if (signedBy.length > 0) return signedBy;
+      if (authType.length > 0) return authType;
     }
     return ['other'];
   }

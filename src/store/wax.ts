@@ -23,7 +23,7 @@ export const useWaxStore = defineStore('wax', {
     async getEntireWaxInformations(wax: TWaxAccountInformations, transaction: ApiTransaction, username: string): Promise<void> {
       this.keys = await wax.getNormalizeKeysFor(transaction);
       this.accounts = await wax.getAccountAuthsFor(username);
-      this.authType = await wax.getAuthorityTypeFor(username, this.keys);
+      this.authType = await wax.getAuthorityTypeFor(this.signedBy, this.keys);
       this.signedBy = await wax.getAccountsKeyReferencesFor(transaction);
       this.signatures = await wax.getSignaturesFor(transaction);
       this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);

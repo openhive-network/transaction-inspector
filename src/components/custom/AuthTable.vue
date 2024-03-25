@@ -9,9 +9,9 @@
     </TableHeader>
     <TableBody>
       <TableRow class="leading-10" v-if="wax.signedBy.value.length > 0">
-        <TableCell>@{{ wax.accountName.value }}</TableCell>
+        <TableCell>@{{ wax.signedBy.value }}</TableCell>
         <TableCell>
-          <div v-for="(signer, index) in wax.signedBy.value" :key="index">{{ signer }}</div>
+          <div v-for="(signer, index) in wax.authType.value" :key="index">{{ signer }}</div>
         </TableCell>
       </TableRow>
     </TableBody>
