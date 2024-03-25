@@ -11,7 +11,7 @@
       <TableHeader>
         <TableRow>
           <TableHead class="text-lg">Signature</TableHead>
-          <TableHead class="text-lg">HF26</TableHead>
+          <TableHead class="text-lg">Pack</TableHead>
           <TableHead class="text-lg">Public key</TableHead>
           <TableHead class="text-lg">Account auths</TableHead>
           <TableHead class="text-lg text-center">
@@ -39,7 +39,7 @@
               <hr v-if="wax.signatures.value.length > 1" class="my-3" />
             </span>
           </TableCell>
-          <TableCell> a </TableCell>
+          <TableCell>{{ wax.pack.value }}</TableCell>
           <TableCell>
             <span
               v-for="(key, index) in wax.keys.value"

@@ -45,15 +45,39 @@ class WaxAccountInformations {
     return await this.chain.api.database_api.find_accounts({ accounts: [account] });
   }
 
-  async checkVerifyAuthorityFor(transaction: ApiTransaction): Promise<boolean> {
+  async checkVerifyAuthorityFor(transaction: ApiTransaction): Promise<boolean | undefined> {
     await this.requireChain();
 
-    return (
+    try {
+      return (
+        await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
+          trx: transaction,
+          pack: EPackType.HF26,
+        })
+      ).valid;
+    } catch (error) {}
+    try {
+      return (
+        await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
+          trx: transaction,
+          pack: EPackType.LEGACY,
+        })
+      ).valid;
+    } catch (error) {}
+  }
+
+  async getPackTypeFor(transaction: ApiTransaction): Promise<EPackType> {
+    await this.requireChain();
+
+    try {
       await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
         trx: transaction,
         pack: EPackType.HF26,
-      })
-    ).valid;
+      });
+      return EPackType.HF26;
+    } catch (error) {
+      return EPackType.LEGACY;
+    }
   }
 
   async isDirectlySigned(expectedSigner: TAccountName, expectedAuthorityLevel: EAuthorityLevel, transaction: ApiTransaction): Promise<boolean> {
@@ -100,16 +124,18 @@ class WaxAccountInformations {
 
     const accountToCheck = await this.accountToCheck(account);
 
-    for (let i = 0; i < transactionKeys.length; ++i) {
-      const authType = [
-        { type: 'owner', key: accountToCheck.accounts[i].owner.key_auths[i][0] },
-        { type: 'active', key: accountToCheck.accounts[i].active.key_auths[i][0] },
-        { type: 'posting', key: accountToCheck.accounts[i].posting.key_auths[i][0] },
-      ]
-        .map(acc => (acc.key === transactionKeys[i] ? acc.type : ''))
-        .filter(el => el.length > 0);
+    if (accountToCheck.accounts.length > 0) {
+      for (let i = 0; i < transactionKeys.length; ++i) {
+        const authType = [
+          { type: 'owner', key: accountToCheck.accounts[i].owner.key_auths[i][0] },
+          { type: 'active', key: accountToCheck.accounts[i].active.key_auths[i][0] },
+          { type: 'posting', key: accountToCheck.accounts[i].posting.key_auths[i][0] },
+        ]
+          .map(acc => (acc.key === transactionKeys[i] ? acc.type : ''))
+          .filter(el => el.length > 0);
 
-      if (authType.length > 0) return authType;
+        if (authType.length > 0) return authType;
+      }
     }
     return ['other'];
   }

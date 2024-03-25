@@ -1,6 +1,6 @@
 import { toast } from '@/components/ui/toast';
 import type { TWaxAccountInformations } from '@/plugins/wax';
-import { EAuthorityLevel } from '@/plugins/wax/types';
+import { EAuthorityLevel, EPackType } from '@/plugins/wax/types';
 import { ApiTransaction } from '@hive/wax';
 import { defineStore } from 'pinia';
 
@@ -11,7 +11,8 @@ export const useWaxStore = defineStore('wax', {
     authType: [] as string[],
     signedBy: '',
     signatures: [] as string[],
-    correctlySigned: false,
+    correctlySigned: false as boolean | undefined,
+    pack: EPackType.HF26,
     id: '',
     sigDigest: '',
     accountName: '',
@@ -32,6 +33,7 @@ export const useWaxStore = defineStore('wax', {
       this.satisfied = await wax.compareSignatures(username, transaction);
       this.accountName = username;
       this.isDirectlySigned = await wax.isDirectlySigned(username, EAuthorityLevel.POSTING, transaction);
+      this.pack = await wax.getPackTypeFor(transaction);
     },
 
     async copy(string: string): Promise<void> {
