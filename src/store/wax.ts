@@ -7,7 +7,7 @@ import { defineStore } from 'pinia';
 export const useWaxStore = defineStore('wax', {
   state: () => ({
     keys: [] as string[],
-    accounts: [] as string[][],
+    accountsAuth: [] as string[][],
     authType: [] as string[],
     signedBy: '',
     signatures: [] as string[],
@@ -22,9 +22,9 @@ export const useWaxStore = defineStore('wax', {
   actions: {
     async getEntireWaxInformations(wax: TWaxAccountInformations, transaction: ApiTransaction, username: string): Promise<void> {
       this.keys = await wax.getNormalizeKeysFor(transaction);
-      this.accounts = await wax.getAccountAuthsFor(username);
-      this.authType = await wax.getAuthorityTypeFor(this.signedBy, this.keys);
+      this.accountsAuth = await wax.getAccountAuthsFor(username);
       this.signedBy = await wax.getAccountsKeyReferencesFor(transaction);
+      this.authType = await wax.getAuthorityTypeFor(this.signedBy, this.keys);
       this.signatures = await wax.getSignaturesFor(transaction);
       this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
       this.id = await wax.getTransactionIdFor(transaction);

@@ -54,15 +54,22 @@
             </span>
           </TableCell>
           <TableCell
-            v-if="wax.accounts.value.length !== 0"
-            v-for="(account, index) in wax.accounts.value"
+            v-if="wax.accountsAuth.value.length !== 0"
+            v-for="(account, index) in wax.accountsAuth.value"
             :key="index"
             class="max-w-[100px] text-ellipsis overflow-hidden">
             <p v-for="(el, index) in account" :key="index">{{ el }}</p>
-            <hr v-if="wax.accounts.value.length > 1" class="my-3" />
+            <hr v-if="wax.accountsAuth.value.length > 1" class="my-3" />
           </TableCell>
           <TableCell v-else>...</TableCell>
-          <TableCell> {{ `@${wax.signedBy.value}` }}</TableCell>
+          <TableCell>
+            <a
+              :href="`https://explore.openhive.network/@${wax.signedBy.value}`"
+              target="_blank"
+              class="transition-colors p-3 rounded-lg hover:bg-accent">
+              {{ `@${wax.signedBy.value}` }}
+            </a>
+          </TableCell>
         </TableRow>
       </TableBody>
     </Table>
