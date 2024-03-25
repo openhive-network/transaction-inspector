@@ -1,5 +1,5 @@
 <template>
-  <Card class="p-4 h-full">
+  <Card class="p-4" style="height: calc(100vh - 4rem)">
     <CardHeader class="flex flex-row justify-between">
       <div>
         <CardTitle>Informations about your transaction</CardTitle>
