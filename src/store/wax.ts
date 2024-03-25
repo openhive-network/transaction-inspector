@@ -8,8 +8,8 @@ export const useWaxStore = defineStore('wax', {
   state: () => ({
     keys: [] as string[],
     accounts: [] as string[][],
-    signedBy: [] as string[],
-    refs: [] as string[],
+    authType: [] as string[],
+    signedBy: '',
     signatures: [] as string[],
     correctlySigned: false,
     id: '',
@@ -23,8 +23,8 @@ export const useWaxStore = defineStore('wax', {
     async getEntireWaxInformations(wax: TWaxAccountInformations, transaction: ApiTransaction, username: string): Promise<void> {
       this.keys = await wax.getNormalizeKeysFor(transaction);
       this.accounts = await wax.getAccountAuthsFor(username);
-      this.signedBy = await wax.getAuthorityTypeFor(username, this.keys);
-      this.refs = await wax.getAccountsKeyReferencesFor(transaction);
+      this.authType = await wax.getAuthorityTypeFor(username, this.keys);
+      this.signedBy = await wax.getAccountsKeyReferencesFor(transaction);
       this.signatures = await wax.getSignaturesFor(transaction);
       this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
       this.id = await wax.getTransactionIdFor(transaction);

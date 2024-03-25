@@ -84,13 +84,15 @@ class WaxAccountInformations {
     return false;
   }
 
-  async getAccountsKeyReferencesFor(transaction: ApiTransaction): Promise<string[]> {
+  async getAccountsKeyReferencesFor(transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
 
     const mappedKeys = await this.getNormalizeKeysFor(transaction);
-    const keyReferences = await this.chain.api.account_by_key_api.get_key_references({ keys: mappedKeys });
+    const accountsByRefs = (await this.chain.api.account_by_key_api.get_key_references({ keys: mappedKeys })).accounts;
 
-    return keyReferences.accounts[0];
+    const accounts = new Array<string[]>(...accountsByRefs);
+
+    return accounts.join(',');
   }
 
   async getAuthorityTypeFor(account: string, transactionKeys: string[]): Promise<string[]> {
