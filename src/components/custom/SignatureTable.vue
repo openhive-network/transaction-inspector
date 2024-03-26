@@ -85,7 +85,7 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useWaxStore } from '@/store/wax';
-import { mdiClipboardMultipleOutline, mdiCheck, mdiClose } from '@mdi/js';
+import { mdiClipboardMultipleOutline } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { storeToRefs } from 'pinia';
 
