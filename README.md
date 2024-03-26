@@ -1,33 +1,18 @@
-# my-vue-app
+# Transaction inspector
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+This app allows to check all importnat informations about your transaction, like `id`, `sig digest`, `public keys` etc.
 
 ## Project Setup
 
 ```sh
+# Make sure you are in the project root directory.
+
+# To install project dependencies, run:
 pnpm install
-```
 
-### Compile and Hot-Reload for Development
-
-```sh
+# To start the app in developers mode with live server included, run:
 pnpm dev
-```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
+# To build the application for production into dist directory, run:
 pnpm build
 ```
