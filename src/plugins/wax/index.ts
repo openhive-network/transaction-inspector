@@ -18,21 +18,44 @@ class WaxAccountInformations {
     if (typeof this.chain === 'undefined') this.chain = await createHiveChain();
   }
 
+  async getPackTypeFor(transaction: ApiTransaction): Promise<EPackType> {
+    await this.requireChain();
+
+    try {
+      await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
+        trx: transaction,
+        pack: EPackType.HF26,
+      });
+      return EPackType.HF26;
+    } catch (error) {
+      return EPackType.LEGACY;
+    }
+  }
+
   async getTransactionIdFor(transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
-    return this.chain.TransactionBuilder.fromApi(transaction).id;
+    return (await this.getPackTypeFor(transaction)) === EPackType.HF26
+      ? this.chain.TransactionBuilder.fromApi(transaction).id
+      : this.chain.TransactionBuilder.fromApi(transaction).legacy_id;
   }
 
   async getSigDigestFor(transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
-    return this.chain.TransactionBuilder.fromApi(transaction).sigDigest;
+
+    return (await this.getPackTypeFor(transaction)) === EPackType.HF26
+      ? this.chain.TransactionBuilder.fromApi(transaction).sigDigest
+      : this.chain.TransactionBuilder.fromApi(transaction).legacy_sigDigest;
   }
 
   async getNormalizeKeysFor(transaction: ApiTransaction): Promise<string[]> {
     await this.requireChain();
+    const pack = await this.getPackTypeFor(transaction);
 
-    const signatureKeys = this.chain.TransactionBuilder.fromApi(transaction).signatureKeys;
-    return signatureKeys.map(key => (key.startsWith('STM') ? `${key}` : `STM${key}`));
+    return (
+      pack === EPackType.HF26
+        ? this.chain.TransactionBuilder.fromApi(transaction).signatureKeys
+        : this.chain.TransactionBuilder.fromApi(transaction).legacy_signatureKeys
+    ).map(key => (key.startsWith('STM') ? `${key}` : `STM${key}`));
   }
 
   async getSignaturesFor(transaction: ApiTransaction): Promise<string[]> {
@@ -64,20 +87,6 @@ class WaxAccountInformations {
         })
       ).valid;
     } catch (error) {}
-  }
-
-  async getPackTypeFor(transaction: ApiTransaction): Promise<EPackType> {
-    await this.requireChain();
-
-    try {
-      await this.chain.extend<TVerifyAuthority>().api.database_api.verify_authority({
-        trx: transaction,
-        pack: EPackType.HF26,
-      });
-      return EPackType.HF26;
-    } catch (error) {
-      return EPackType.LEGACY;
-    }
   }
 
   async isDirectlySigned(expectedSigner: TAccountName, expectedAuthorityLevel: EAuthorityLevel, transaction: ApiTransaction): Promise<boolean> {
