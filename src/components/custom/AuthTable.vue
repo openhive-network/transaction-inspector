@@ -1,6 +1,7 @@
 <template>
   <h3 class="text-lg">Required Authorities:</h3>
-  <Table>
+  <Skeleton v-if="wax.isLoading.value" class="h-[125px] w-full rounded-xl" />
+  <Table v-else>
     <TableHeader>
       <TableRow>
         <TableHead>Authority account</TableHead>
@@ -27,6 +28,7 @@
 
 <script lang="ts" setup>
 import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from '../ui/table';
+import { Skeleton } from '../ui/skeleton';
 import { storeToRefs } from 'pinia';
 import { useWaxStore } from '@/store/wax';
 

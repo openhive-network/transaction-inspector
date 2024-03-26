@@ -1,6 +1,7 @@
 <template>
   <h3 class="text-lg">Transaction:</h3>
-  <Table>
+  <Skeleton v-if="wax.isLoading.value" class="h-[125px] w-full rounded-xl" />
+  <Table v-else>
     <TableHeader>
       <TableRow>
         <TableHead>Transaction ID</TableHead>
@@ -32,7 +33,7 @@
 
 <script lang="ts" setup>
 import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from '../ui/table';
-import Button from '../ui/button/Button.vue';
+import { Skeleton } from '../ui/skeleton';
 import svgIcon from '@jamescoyle/vue-icon';
 import { mdiClipboardMultipleOutline } from '@mdi/js';
 import { useWaxStore } from '@/store/wax';

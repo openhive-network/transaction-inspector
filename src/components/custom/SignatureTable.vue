@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col">
+  <Skeleton v-if="wax.isLoading.value" class="h-[125px] w-full rounded-xl" />
+  <div v-else class="flex flex-col">
     <div v-if="wax.keys.value.length > 0" class="hidden md:block">
       <p v-if="wax.correctlySigned" class="text-2xl text-green p-4 text-center rounded-sm border-2 border-green bg-green60">
         Your transaction is valid.
@@ -82,6 +83,7 @@
 
 <script setup lang="ts">
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useWaxStore } from '@/store/wax';
 import { mdiClipboardMultipleOutline, mdiCheck, mdiClose } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';

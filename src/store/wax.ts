@@ -18,22 +18,30 @@ export const useWaxStore = defineStore('wax', {
     accountName: '',
     satisfied: '',
     isDirectlySigned: false,
+
+    isLoading: false,
   }),
 
   actions: {
     async getEntireWaxInformations(wax: TWaxAccountInformations, transaction: ApiTransaction, username: string): Promise<void> {
-      this.keys = await wax.getNormalizeKeysFor(transaction);
-      this.accountsAuth = await wax.getAccountAuthsFor(username);
-      this.signedBy = await wax.getAccountsKeyReferencesFor(transaction);
-      this.authType = await wax.getAuthorityTypeFor(this.signedBy, this.keys);
-      this.signatures = await wax.getSignaturesFor(transaction);
-      this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
-      this.id = await wax.getTransactionIdFor(transaction);
-      this.sigDigest = await wax.getSigDigestFor(transaction);
-      this.satisfied = await wax.compareSignatures(username, transaction);
-      this.accountName = username;
-      this.isDirectlySigned = await wax.isDirectlySigned(username, EAuthorityLevel.POSTING, transaction);
-      this.pack = await wax.getPackTypeFor(transaction);
+      this.isLoading = false;
+      try {
+        this.isLoading = true;
+        this.keys = await wax.getNormalizeKeysFor(transaction);
+        this.accountsAuth = await wax.getAccountAuthsFor(username);
+        this.signedBy = await wax.getAccountsKeyReferencesFor(transaction);
+        this.authType = await wax.getAuthorityTypeFor(this.signedBy, this.keys);
+        this.signatures = await wax.getSignaturesFor(transaction);
+        this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
+        this.id = await wax.getTransactionIdFor(transaction);
+        this.sigDigest = await wax.getSigDigestFor(transaction);
+        this.satisfied = await wax.compareSignatures(username, transaction);
+        this.accountName = username;
+        this.isDirectlySigned = await wax.isDirectlySigned(username, EAuthorityLevel.POSTING, transaction);
+        this.pack = await wax.getPackTypeFor(transaction);
+      } finally {
+        this.isLoading = false;
+      }
     },
 
     async copy(string: string): Promise<void> {
