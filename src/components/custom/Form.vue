@@ -48,6 +48,9 @@ const getEntireWaxInformations = async () => {
 };
 
 const validateForm = (): void => {
+  usernameError.value = '';
+  transactionError.value = '';
+
   if (typeof username.value === 'undefined') usernameError.value = 'Please provide your username';
   if (typeof transaction.value === 'undefined') transactionError.value = 'Please provide your transaction';
   else getEntireWaxInformations();
