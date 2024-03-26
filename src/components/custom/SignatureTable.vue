@@ -1,12 +1,16 @@
 <template>
   <div class="flex flex-col">
-    <div v-if="wax.keys.value.length > 0">
+    <div v-if="wax.keys.value.length > 0" class="hidden md:block">
       <p v-if="wax.correctlySigned" class="text-2xl text-green p-4 text-center rounded-sm border-2 border-green bg-green60">
         Your transaction is valid.
       </p>
       <p v-else class="text-2xl text-destructive p-4 text-center rounded-sm border-2 border-destructive bg-red60">Your transaction is invalid.</p>
     </div>
-    <Table class="mt-16">
+    <div v-if="wax.keys.value.length > 0" class="md:hidden">
+      <p v-if="wax.correctlySigned" class="text-green60 text-center">Your transaction is valid.</p>
+      <p v-else class="text-destructive text-center">Your transaction is invalid.</p>
+    </div>
+    <Table class="md:mt-16">
       <TableCaption>Key informations.</TableCaption>
       <TableHeader>
         <TableRow>
@@ -18,7 +22,7 @@
             Authorities
             <hr class="my-2" />
             <div class="flex justify-between">
-              <span class="text-lg">Signed by</span>
+              <span class="text-lg mr-20 md:mr-0">Signed by</span>
               <span class="text-lg">Satisfied</span>
             </div>
           </TableHead>

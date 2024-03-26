@@ -1,7 +1,7 @@
 <template>
-  <Card class="p-4" style="height: calc(100vh - 4rem)">
-    <CardHeader class="flex flex-row justify-between">
-      <div>
+  <Card class="p-4" style="min-height: calc(100vh - 4rem)">
+    <CardHeader class="flex flex-col md:flex-row justify-between">
+      <div class="mb-4 md:mb-0">
         <CardTitle>Informations about your transaction</CardTitle>
         <CardDescription class="mt-2">Check in easy and fast way all informations about your transaction.</CardDescription>
       </div>

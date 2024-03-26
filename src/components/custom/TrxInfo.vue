@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="flex justify-between my-32">
-      <div class="w-1/2 mx-4">
+    <div class="flex flex-col lg:flex-row justify-between my-32">
+      <div class="w-full lg:w-1/2 mx-4">
         <TrxTable />
       </div>
-      <div class="w-1/2 mx-4">
+      <div class="w-full mt-16 lg:w-1/2 lg:mt-0 mx-4">
         <AuthTable />
       </div>
     </div>
