@@ -1,17 +1,7 @@
 <template>
   <Skeleton v-if="wax.isLoading.value" class="h-[125px] w-full rounded-xl" />
   <div v-else class="flex flex-col">
-    <div v-if="wax.keys.value.length > 0" class="hidden lg:block">
-      <p v-if="wax.correctlySigned" class="text-2xl text-green p-4 text-center rounded-sm border-2 border-green bg-green60">
-        Your transaction is valid.
-      </p>
-      <p v-else class="text-2xl text-destructive p-4 text-center rounded-sm border-2 border-destructive bg-red60">Your transaction is invalid.</p>
-    </div>
-    <div v-if="wax.keys.value.length > 0" class="lg:hidden">
-      <p v-if="wax.correctlySigned" class="text-green60 text-center">Your transaction is valid.</p>
-      <p v-else class="text-destructive text-center">Your transaction is invalid.</p>
-    </div>
-    <Table class="md:mt-16">
+    <Table class="md:mt-6">
       <TableCaption>Key informations.</TableCaption>
       <TableHeader>
         <TableRow>
