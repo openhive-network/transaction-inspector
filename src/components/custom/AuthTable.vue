@@ -6,6 +6,7 @@
       <TableRow>
         <TableHead>Authority account</TableHead>
         <TableHead>Authority type</TableHead>
+        <TableHead>Satisfied</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
@@ -21,6 +22,11 @@
         <TableCell>
           <div v-for="(signer, index) in wax.authType.value" :key="index">{{ signer }}</div>
         </TableCell>
+        <TableCell>
+          <div v-for="(signer, index) in wax.authType.value" :key="index" class="flex justify-center">
+            <svg-icon type="mdi" :path="signer === wax.expectedAuthType.value ? mdiCheck : mdiClose" width="16" height="16" />
+          </div>
+        </TableCell>
       </TableRow>
     </TableBody>
   </Table>
@@ -31,7 +37,7 @@ import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from '.
 import { Skeleton } from '../ui/skeleton';
 import { storeToRefs } from 'pinia';
 import { useWaxStore } from '@/store/wax';
-import { mdiOpenInNew } from '@mdi/js';
+import { mdiOpenInNew, mdiCheck, mdiClose } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 
 const waxStore = useWaxStore();

@@ -9,6 +9,11 @@ export interface IVerifyAuthorityResponse {
   valid: boolean;
 }
 
+interface IRequiredSignaturesRequest {
+  trx: ApiTransaction;
+  available_keys: string[];
+}
+
 export interface IRequiredSignaturesResponse {
   keys: string[];
 }
@@ -39,5 +44,11 @@ export enum EAuthorityLevel {
 export type TVerifyAuthority = {
   database_api: {
     verify_authority: TWaxApiRequest<IVerifyAuthorityRequest, IVerifyAuthorityResponse>;
+  };
+};
+
+export type TRequiredSignatures = {
+  database_api: {
+    get_required_signatures: TWaxApiRequest<IRequiredSignaturesRequest, IRequiredSignaturesResponse>;
   };
 };

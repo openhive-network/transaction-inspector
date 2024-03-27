@@ -17,6 +17,7 @@ export const useWaxStore = defineStore('wax', {
     sigDigest: '',
     accountName: '',
     isDirectlySigned: false as boolean | undefined,
+    expectedAuthType: '',
 
     isLoading: false,
   }),
@@ -37,6 +38,7 @@ export const useWaxStore = defineStore('wax', {
         this.accountName = username;
         this.isDirectlySigned = await wax.isDirectlySigned(username, EAuthorityLevel.POSTING, transaction);
         this.pack = await wax.getPackTypeFor(transaction);
+        this.expectedAuthType = await wax.compareSignatures(username, transaction);
       } finally {
         this.isLoading = false;
       }
