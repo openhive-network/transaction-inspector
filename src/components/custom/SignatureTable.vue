@@ -24,7 +24,7 @@
             <hr class="my-2" />
             <div class="flex justify-between">
               <span class="text-lg mr-20 lg:mr-0">Signed by</span>
-              <span class="text-lg">Satisfied</span>
+              <span class="text-lg">Direct</span>
             </div>
           </TableHead>
         </TableRow>
@@ -67,13 +67,14 @@
             <hr v-if="wax.accountsAuth.value.length > 1" class="my-3" />
           </TableCell>
           <TableCell v-else>...</TableCell>
-          <TableCell>
+          <TableCell class="flex justify-between items-center">
             <a
               :href="`https://explore.openhive.network/@${wax.signedBy.value}`"
               target="_blank"
               class="transition-colors p-3 rounded-lg hover:bg-accent">
               {{ `@${wax.signedBy.value}` }}
             </a>
+            <svg-icon type="mdi" :path="wax.isDirectlySigned.value ? mdiCheck : mdiClose" width="16" height="16" />
           </TableCell>
         </TableRow>
       </TableBody>
@@ -85,7 +86,7 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useWaxStore } from '@/store/wax';
-import { mdiClipboardMultipleOutline } from '@mdi/js';
+import { mdiClipboardMultipleOutline, mdiCheck, mdiClose } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { storeToRefs } from 'pinia';
 

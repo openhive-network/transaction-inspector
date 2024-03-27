@@ -80,7 +80,11 @@ class WaxAccountInformations {
     } catch (error) {}
   }
 
-  async isDirectlySigned(expectedSigner: TAccountName, expectedAuthorityLevel: EAuthorityLevel, transaction: ApiTransaction): Promise<boolean> {
+  async isDirectlySigned(
+    expectedSigner: TAccountName,
+    expectedAuthorityLevel: EAuthorityLevel,
+    transaction: ApiTransaction
+  ): Promise<boolean | undefined> {
     const accounts = await this.accountToCheck(expectedSigner);
     const keys = await this.getNormalizeKeysFor(transaction);
 
@@ -104,8 +108,6 @@ class WaxAccountInformations {
 
       for (let i = 0; i < keys.length; ++i) return authorityToVerify.key_auths.some((auth: ApiKeyAuth) => auth['0'] === keys[i]);
     }
-
-    return false;
   }
 
   async getAccountsKeyReferencesFor(transaction: ApiTransaction): Promise<string> {

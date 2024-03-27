@@ -16,7 +16,7 @@ export const useWaxStore = defineStore('wax', {
     id: '',
     sigDigest: '',
     accountName: '',
-    isDirectlySigned: false,
+    isDirectlySigned: false as boolean | undefined,
 
     isLoading: false,
   }),
