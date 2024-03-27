@@ -49,7 +49,7 @@ class WaxAccountInformations {
     ).map(key => (key.startsWith('STM') ? `${key}` : `STM${key}`));
   }
 
-  async getSignaturesFor(transaction: ApiTransaction): Promise<string[]> {
+  getSignaturesFor(transaction: ApiTransaction): string[] {
     return transaction.signatures;
   }
 
