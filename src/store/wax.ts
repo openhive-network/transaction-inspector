@@ -24,7 +24,6 @@ export const useWaxStore = defineStore('wax', {
 
   actions: {
     async getEntireWaxInformations(wax: TWaxAccountInformations, transaction: ApiTransaction, username: string): Promise<void> {
-      this.isLoading = false;
       try {
         this.isLoading = true;
         this.keys = await wax.getNormalizeKeysFor(transaction);
