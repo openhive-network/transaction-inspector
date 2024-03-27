@@ -36,9 +36,9 @@ export enum EPackType {
 }
 
 export enum EAuthorityLevel {
-  POSTING,
-  ACTIVE,
-  OWNER,
+  POSTING = 'Posting',
+  ACTIVE = 'Active',
+  OWNER = 'Owner',
 }
 
 export type TVerifyAuthority = {

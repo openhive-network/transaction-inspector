@@ -48,7 +48,7 @@
             </span>
           </TableCell>
           <TableCell
-            v-if="wax.accountsAuth.value.length !== 0"
+            v-if="typeof wax.accountsAuth.value !== 'undefined' && wax.accountsAuth.value.length !== 0"
             v-for="(account, index) in wax.accountsAuth.value"
             :key="index"
             class="max-w-[100px] text-ellipsis overflow-hidden">

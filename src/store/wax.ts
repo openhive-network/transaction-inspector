@@ -8,7 +8,7 @@ export const useWaxStore = defineStore('wax', {
   state: () => ({
     keys: [] as string[],
     accountsAuth: [] as string[][] | undefined,
-    authType: [] as string[],
+    authType: EAuthorityLevel.POSTING,
     signedBy: '',
     signatures: [] as string[],
     correctlySigned: false as boolean | undefined,
@@ -33,10 +33,10 @@ export const useWaxStore = defineStore('wax', {
         this.authType = await wax.getAuthorityTypeFor(this.signedBy, this.keys);
         this.signatures = await wax.getSignaturesFor(transaction);
         this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
+        this.isDirectlySigned = await wax.isDirectlySigned(username, this.authType, transaction);
         this.id = await wax.getTransactionIdFor(transaction);
         this.sigDigest = await wax.getSigDigestFor(transaction);
         this.accountName = username;
-        this.isDirectlySigned = await wax.isDirectlySigned(username, EAuthorityLevel.POSTING, transaction);
         this.pack = await wax.getPackTypeFor(transaction);
         this.expectedAuthType = await wax.compareSignatures(username, transaction);
       } finally {

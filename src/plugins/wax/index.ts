@@ -121,25 +121,19 @@ class WaxAccountInformations {
     return accounts.join(',');
   }
 
-  async getAuthorityTypeFor(account: string, transactionKeys: string[]): Promise<string[]> {
+  async getAuthorityTypeFor(account: string, transactionKeys: string[]): Promise<EAuthorityLevel> {
     await this.requireChain();
 
     const accountToCheck = await this.accountToCheck(account);
 
     if (accountToCheck.accounts.length > 0) {
       for (let i = 0; i < transactionKeys.length; ++i) {
-        const authType = [
-          { type: 'owner', key: accountToCheck.accounts[i].owner.key_auths[i][0] },
-          { type: 'active', key: accountToCheck.accounts[i].active.key_auths[i][0] },
-          { type: 'posting', key: accountToCheck.accounts[i].posting.key_auths[i][0] },
-        ]
-          .map(acc => (acc.key === transactionKeys[i] ? acc.type : ''))
-          .filter(el => el.length > 0);
-
-        if (authType.length > 0) return authType;
+        if (accountToCheck.accounts[i].owner.key_auths[i][0] === transactionKeys[i]) return EAuthorityLevel.OWNER;
+        else if (accountToCheck.accounts[i].active.key_auths[i][0] === transactionKeys[i]) return EAuthorityLevel.ACTIVE;
+        else if (accountToCheck.accounts[i].posting.key_auths[i][0] === transactionKeys[i]) return EAuthorityLevel.POSTING;
       }
     }
-    return ['other'];
+    return EAuthorityLevel.POSTING;
   }
 
   async getRequiredSignatures(transaction: ApiTransaction): Promise<string[]> {
@@ -152,15 +146,19 @@ class WaxAccountInformations {
     ).keys;
   }
 
-  async compareSignatures(account: string, transaction: ApiTransaction): Promise<any> {
+  async compareSignatures(account: string, transaction: ApiTransaction): Promise<EAuthorityLevel> {
     const accountToCheck = await this.accountToCheck(account);
     const requiredSignatures = await this.getRequiredSignatures(transaction);
 
     for (let i = 0; i < requiredSignatures.length; ++i) {
-      if (accountToCheck.accounts[i].owner.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i])) return 'owner';
-      else if (accountToCheck.accounts[i].active.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i])) return 'active';
-      else if (accountToCheck.accounts[i].posting.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i])) return 'posting';
+      if (accountToCheck.accounts[i].owner.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i])) return EAuthorityLevel.OWNER;
+      else if (accountToCheck.accounts[i].active.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i]))
+        return EAuthorityLevel.ACTIVE;
+      else if (accountToCheck.accounts[i].posting.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i]))
+        return EAuthorityLevel.POSTING;
     }
+
+    return EAuthorityLevel.POSTING;
   }
 
   async getAccountAuthsFor(account: string): Promise<string[][] | undefined> {
@@ -170,9 +168,9 @@ class WaxAccountInformations {
 
     for (let i = 0; i < accountToCheck.accounts.length; ++i) {
       return [
-        { type: 'owner', auths: accountToCheck.accounts[i].owner.account_auths },
-        { type: 'active', auths: accountToCheck.accounts[i].active.account_auths },
-        { type: 'posting', auths: accountToCheck.accounts[i].posting.account_auths },
+        { type: EAuthorityLevel.OWNER, auths: accountToCheck.accounts[i].owner.account_auths },
+        { type: EAuthorityLevel.ACTIVE, auths: accountToCheck.accounts[i].active.account_auths },
+        { type: EAuthorityLevel.POSTING, auths: accountToCheck.accounts[i].posting.account_auths },
       ]
         .filter(acc => acc.auths.length > 0)
         .map(acc => acc.auths.map(node => node[0]));

@@ -20,11 +20,11 @@
           </a>
         </TableCell>
         <TableCell>
-          <div v-for="(signer, index) in wax.authType.value" :key="index">{{ signer }}</div>
+          <div>{{ wax.authType.value }}</div>
         </TableCell>
         <TableCell>
-          <div v-for="(signer, index) in wax.authType.value" :key="index" class="flex justify-center">
-            <svg-icon type="mdi" :path="signer === wax.expectedAuthType.value ? mdiCheck : mdiClose" width="16" height="16" />
+          <div class="flex justify-center">
+            <svg-icon type="mdi" :path="wax.authType.value === wax.expectedAuthType.value ? mdiCheck : mdiClose" width="16" height="16" />
           </div>
         </TableCell>
       </TableRow>
