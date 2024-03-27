@@ -60,8 +60,8 @@
             <a
               :href="`https://explore.openhive.network/@${wax.signedBy.value}`"
               target="_blank"
-              class="transition-colors p-3 rounded-lg hover:bg-accent">
-              {{ `@${wax.signedBy.value}` }}
+              class="inline-flex items-center transition-colors p-3 rounded-lg hover:bg-accent">
+              {{ `@${wax.signedBy.value}` }} <svg-icon class="ml-2" type="mdi" :path="mdiOpenInNew" width="16" height="16" />
             </a>
             <svg-icon type="mdi" :path="wax.isDirectlySigned.value ? mdiCheck : mdiClose" width="16" height="16" />
           </TableCell>
@@ -72,10 +72,10 @@
 </template>
 
 <script setup lang="ts">
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useWaxStore } from '@/store/wax';
-import { mdiClipboardMultipleOutline, mdiCheck, mdiClose } from '@mdi/js';
+import { mdiClipboardMultipleOutline, mdiCheck, mdiClose, mdiOpenInNew } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { storeToRefs } from 'pinia';
 

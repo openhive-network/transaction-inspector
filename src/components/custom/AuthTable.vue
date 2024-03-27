@@ -9,13 +9,13 @@
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow class="leading-10" v-if="wax.signedBy.value.length > 0">
+      <TableRow v-if="wax.signedBy.value.length > 0">
         <TableCell>
           <a
             :href="`https://explore.openhive.network/@${wax.signedBy.value}`"
             target="_blank"
-            class="transition-colors p-3 rounded-lg hover:bg-accent">
-            {{ `@${wax.signedBy.value}` }}
+            class="inline-flex items-center p-3 transition-colors rounded-lg hover:bg-accent">
+            {{ `@${wax.signedBy.value}` }} <svg-icon class="ml-2" type="mdi" :path="mdiOpenInNew" width="16" height="16" />
           </a>
         </TableCell>
         <TableCell>
@@ -31,6 +31,8 @@ import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from '.
 import { Skeleton } from '../ui/skeleton';
 import { storeToRefs } from 'pinia';
 import { useWaxStore } from '@/store/wax';
+import { mdiOpenInNew } from '@mdi/js';
+import SvgIcon from '@jamescoyle/vue-icon';
 
 const waxStore = useWaxStore();
 const wax = storeToRefs(waxStore);
