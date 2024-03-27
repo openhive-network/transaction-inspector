@@ -2,7 +2,6 @@
   <Skeleton v-if="wax.isLoading.value" class="h-[125px] w-full rounded-xl" />
   <div v-else class="flex flex-col">
     <Table class="md:mt-6">
-      <TableCaption>Key informations.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead class="text-lg">Signature</TableHead>
