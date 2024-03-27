@@ -42,9 +42,7 @@ const getEntireWaxInformations = async () => {
   try {
     const parsedUsername = username.value?.startsWith('@') ? username.value.slice(1) : username.value;
     await store.getEntireWaxInformations(wax, JSON.parse(String(transaction.value?.trim())) as ApiTransaction, parsedUsername?.trim() as string);
-  } catch (error) {
-    console.error(error);
-  }
+  } catch (error) {}
 };
 
 const validateForm = (): void => {
