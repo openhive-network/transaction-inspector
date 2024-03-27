@@ -7,7 +7,7 @@ import { defineStore } from 'pinia';
 export const useWaxStore = defineStore('wax', {
   state: () => ({
     keys: [] as string[],
-    accountsAuth: [] as string[][],
+    accountsAuth: [] as string[][] | undefined,
     authType: [] as string[],
     signedBy: '',
     signatures: [] as string[],

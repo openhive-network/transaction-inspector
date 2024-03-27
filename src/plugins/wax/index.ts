@@ -157,24 +157,26 @@ class WaxAccountInformations {
     const requiredSignatures = await this.getRequiredSignatures(transaction);
 
     for (let i = 0; i < requiredSignatures.length; ++i) {
-      if (requiredSignatures[i] === accountToCheck.accounts[i].owner.key_auths[i][0]) return 'owner';
-      else if (requiredSignatures[i] === accountToCheck.accounts[i].active.key_auths[i][0]) return 'active';
-      else if (requiredSignatures[i] === accountToCheck.accounts[i].posting.key_auths[i][0]) return 'posting';
+      if (accountToCheck.accounts[i].owner.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i])) return 'owner';
+      else if (accountToCheck.accounts[i].active.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i])) return 'active';
+      else if (accountToCheck.accounts[i].posting.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i])) return 'posting';
     }
   }
 
-  async getAccountAuthsFor(account: string): Promise<string[][]> {
+  async getAccountAuthsFor(account: string): Promise<string[][] | undefined> {
     await this.requireChain();
 
     const accountToCheck = await this.accountToCheck(account);
 
-    return [
-      { type: 'owner', auths: accountToCheck.accounts[0].owner.account_auths },
-      { type: 'active', auths: accountToCheck.accounts[0].active.account_auths },
-      { type: 'posting', auths: accountToCheck.accounts[0].posting.account_auths },
-    ]
-      .filter(acc => acc.auths.length > 0)
-      .map(acc => acc.auths.map(node => node[0]));
+    for (let i = 0; i < accountToCheck.accounts.length; ++i) {
+      return [
+        { type: 'owner', auths: accountToCheck.accounts[i].owner.account_auths },
+        { type: 'active', auths: accountToCheck.accounts[i].active.account_auths },
+        { type: 'posting', auths: accountToCheck.accounts[i].posting.account_auths },
+      ]
+        .filter(acc => acc.auths.length > 0)
+        .map(acc => acc.auths.map(node => node[0]));
+    }
   }
 }
 
