@@ -59,7 +59,7 @@ class WaxAccountInformations {
     return await this.chain.api.database_api.find_accounts({ accounts: [account] });
   }
 
-  async checkVerifyAuthorityFor(transaction: ApiTransaction): Promise<boolean | undefined> {
+  async checkVerifyAuthorityFor(transaction: ApiTransaction): Promise<boolean> {
     await this.requireChain();
 
     try {
@@ -77,7 +77,9 @@ class WaxAccountInformations {
           pack: EPackType.LEGACY,
         })
       ).valid;
-    } catch (error) {}
+    } catch (error) {
+      return false;
+    }
   }
 
   async isDirectlySigned(

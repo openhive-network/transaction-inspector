@@ -11,7 +11,7 @@ export const useWaxStore = defineStore('wax', {
     authType: EAuthorityLevel.POSTING,
     signedBy: '',
     signatures: [] as string[],
-    correctlySigned: false as boolean | undefined,
+    correctlySigned: false,
     pack: EPackType.HF26,
     id: '',
     sigDigest: '',
