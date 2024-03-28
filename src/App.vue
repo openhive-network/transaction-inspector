@@ -1,9 +1,12 @@
 <template>
   <Card class="p-4" style="min-height: calc(100vh - 4rem)">
     <CardHeader class="flex flex-col md:flex-row justify-between items-center">
-      <div class="mb-4 md:mb-0">
-        <CardTitle>Information about your transaction</CardTitle>
-        <CardDescription class="mt-2">Check in easy and fast way all information about your transaction.</CardDescription>
+      <div class="flex items-center mb-4 md:mb-0">
+        <img src="./assets/images/hive-logo.webp" alt="hive logo" width="70px" />
+        <div class="ml-3">
+          <CardTitle>Information about your transaction</CardTitle>
+          <CardDescription class="mt-2">Check in easy and fast way all information about your transaction.</CardDescription>
+        </div>
       </div>
       <div v-if="wax.signatures.value.length > 0" class="hidden md:block">
         <Skeleton v-if="wax.isLoading.value" class="h-[50px] w-[50px] rounded-xl" />
