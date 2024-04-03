@@ -34,6 +34,7 @@
 <script lang="ts" setup>
 import { Table, TableHeader, TableHead, TableBody, TableRow, TableCell } from '../ui/table';
 import { Skeleton } from '../ui/skeleton';
+// @ts-expect-error Missing declaration files
 import svgIcon from '@jamescoyle/vue-icon';
 import { mdiClipboardMultipleOutline } from '@mdi/js';
 import { useWaxStore } from '@/store/wax';

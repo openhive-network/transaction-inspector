@@ -76,6 +76,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Skeleton } from '@/components/ui/skeleton';
 import { useWaxStore } from '@/store/wax';
 import { mdiClipboardMultipleOutline, mdiCheck, mdiClose, mdiOpenInNew } from '@mdi/js';
+// @ts-expect-error Missing declaration files
 import SvgIcon from '@jamescoyle/vue-icon';
 import { storeToRefs } from 'pinia';
 

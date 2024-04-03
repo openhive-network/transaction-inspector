@@ -42,6 +42,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './com
 import Toaster from '@/components/ui/toast/Toaster.vue';
 import { Skeleton } from './components/ui/skeleton';
 import { mdiCheck, mdiClose } from '@mdi/js';
+// @ts-expect-error Missing declaration files
 import SvgIcon from '@jamescoyle/vue-icon';
 import { storeToRefs } from 'pinia';
 import { useWaxStore } from './store/wax';

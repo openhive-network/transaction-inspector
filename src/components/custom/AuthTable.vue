@@ -38,6 +38,7 @@ import { Skeleton } from '../ui/skeleton';
 import { storeToRefs } from 'pinia';
 import { useWaxStore } from '@/store/wax';
 import { mdiOpenInNew, mdiCheck, mdiClose } from '@mdi/js';
+// @ts-expect-error Missing declaration files
 import SvgIcon from '@jamescoyle/vue-icon';
 
 const waxStore = useWaxStore();
