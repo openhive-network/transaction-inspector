@@ -13,7 +13,7 @@
         <TableCell>
           <span class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer" @click="waxStore.copy(wax.id.value)">
             <span class="inline-flex items-center">
-              {{ `${wax.id.value.substring(0, 5)}...${wax.id.value.substring(wax.id.value.length - 5)}` }}
+              {{ `${wax.id.value.slice(0, 5)}...${wax.id.value.slice(-5)}` }}
               <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
             </span>
           </span>
@@ -21,7 +21,7 @@
         <TableCell>
           <span class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer" @click="waxStore.copy(wax.sigDigest.value)">
             <span class="inline-flex items-center">
-              {{ `${wax.sigDigest.value.substring(0, 5)}...${wax.sigDigest.value.substring(wax.sigDigest.value.length - 5)}` }}
+              {{ `${wax.sigDigest.value.slice(0, 5)}...${wax.sigDigest.value.slice(-5)}` }}
               <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
             </span>
           </span>

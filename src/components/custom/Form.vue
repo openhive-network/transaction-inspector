@@ -29,6 +29,7 @@ import type { ApiTransaction } from '@hive/wax';
 import { inject, ref } from 'vue';
 import type { TWaxAccountInformations } from '@/plugins/wax';
 import { DialogClose, DialogFooter } from '../ui/dialog';
+import { toast } from '../ui/toast/use-toast';
 
 const store = useWaxStore();
 const username = defineModel<string>('username');
@@ -42,7 +43,12 @@ const getEntireWaxInformations = async () => {
   try {
     const parsedUsername = username.value?.startsWith('@') ? username.value.slice(1) : username.value;
     await store.getEntireWaxInformations(wax, JSON.parse(String(transaction.value?.trim())) as ApiTransaction, parsedUsername?.trim() as string);
-  } catch (error) {}
+  } catch (error) {
+    toast({
+      title: `An error occured: ${error}`,
+      variant: 'destructive',
+    });
+  }
 };
 
 const validateForm = (): void => {

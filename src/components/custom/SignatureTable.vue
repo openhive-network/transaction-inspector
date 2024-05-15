@@ -27,7 +27,7 @@
               class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
               @click="waxStore.copy(signature)">
               <span class="inline-flex items-center">
-                {{ `${signature.substring(0, 5)}...${signature.substring(signature.length - 5)}\n` }}
+                {{ `${signature.slice(0, 5)}...${signature.slice(-5)}\n` }}
                 <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
               </span>
               <hr v-if="wax.signatures.value.length > 1" class="my-3" />
@@ -41,7 +41,7 @@
               class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
               @click="waxStore.copy(key)">
               <span class="inline-flex items-center">
-                {{ `${key.substring(0, 5)}...${key.substring(key.length - 5)}\n` }}
+                {{ `${key.slice(0, 5)}...${key.slice(-5)}\n` }}
                 <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
               </span>
               <hr v-if="wax.keys.value.length > 1" class="my-3" />

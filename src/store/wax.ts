@@ -48,7 +48,7 @@ export const useWaxStore = defineStore('wax', {
         await navigator.clipboard.writeText(string);
         toast({
           title: 'Copied to clipboard!',
-          description: string.length > 30 ? `${string.substring(0, 30)}...` : string,
+          description: string.length > 30 ? `${string.slice(0, 30)}...` : string,
         });
       } catch (error: any) {
         toast({
