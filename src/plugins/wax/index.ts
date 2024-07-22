@@ -1,4 +1,4 @@
-import { ApiAuthority, ApiKeyAuth, ApiTransaction, type IHiveChainInterface, type TAccountName, createHiveChain } from '@hive/wax';
+import { ApiAuthority, ApiKeyAuth, ApiTransaction, type IHiveChainInterface, type TAccountName, createHiveChain } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type IAccountType, type TRequiredSignatures, type TVerifyAuthority } from './types.js';
 import type { App } from 'vue';
 
@@ -25,6 +25,7 @@ class WaxAccountInformations {
 
   async getTransactionIdFor(transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
+
     return (await this.getPackTypeFor(transaction)) === EPackType.HF26
       ? this.chain.TransactionBuilder.fromApi(transaction).id
       : this.chain.TransactionBuilder.fromApi(transaction).legacy_id;
@@ -40,6 +41,7 @@ class WaxAccountInformations {
 
   async getNormalizeKeysFor(transaction: ApiTransaction): Promise<string[]> {
     await this.requireChain();
+
     const pack = await this.getPackTypeFor(transaction);
 
     return (

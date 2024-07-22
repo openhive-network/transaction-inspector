@@ -11,7 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
-    "@hive/wax": "0.3.8-240322194252",
+    "@hiveio/wax": "1.27.6-rc1-240719111122",
     "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/js": "^7.4.47",
     "@vee-validate/zod": "^4.12.6",
