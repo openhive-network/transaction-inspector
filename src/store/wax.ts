@@ -18,8 +18,8 @@ export const useWaxStore = defineStore('wax', {
     accountName: '',
     isDirectlySigned: false as boolean | undefined,
     expectedAuthType: '',
-
     isLoading: false,
+    shouldDisplayInformation: false
   }),
 
   actions: {

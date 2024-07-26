@@ -8,7 +8,7 @@
           <CardDescription class="mt-2">Check in easy and fast way all information about your transaction.</CardDescription>
         </div>
       </div>
-      <div v-if="wax.signatures.value.length > 0" class="hidden md:block">
+      <div v-if="wax.signatures.value.length > 0 && wax.shouldDisplayInformation.value" class="hidden md:block">
         <Skeleton v-if="wax.isLoading.value" class="h-[50px] w-[50px] rounded-xl" />
         <span v-else :class="`flex items-center text-lg ${wax.correctlySigned.value ? 'text-green60' : 'text-destructive'}`">
           <svg-icon type="mdi" :path="wax.correctlySigned.value ? mdiCheck : mdiClose" width="24" height="24" class="mr-2" />

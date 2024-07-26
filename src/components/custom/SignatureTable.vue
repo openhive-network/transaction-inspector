@@ -19,7 +19,7 @@
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-if="wax.keys.value.length > 0">
+        <TableRow v-if="wax.keys.value.length > 0 && wax.shouldDisplayInformation.value">
           <TableCell>
             <span
               v-for="(signature, index) in wax.signatures.value"

@@ -25,7 +25,7 @@ import { Textarea } from '../ui/textarea';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
 import { useWaxStore } from '@/store/wax';
-import type { ApiTransaction } from '@hive/wax';
+import type { ApiTransaction } from '@hiveio/wax';
 import { inject, ref } from 'vue';
 import type { TWaxAccountInformations } from '@/plugins/wax';
 import { DialogClose, DialogFooter } from '../ui/dialog';
@@ -40,10 +40,14 @@ const transactionError = ref('');
 const wax = inject<TWaxAccountInformations>('wax')!;
 
 const getEntireWaxInformations = async () => {
+  store.$state.shouldDisplayInformation = false;
+
   try {
+    store.$state.shouldDisplayInformation = true;
     const parsedUsername = username.value?.startsWith('@') ? username.value.slice(1) : username.value;
     await store.getEntireWaxInformations(wax, JSON.parse(String(transaction.value?.trim())) as ApiTransaction, parsedUsername?.trim() as string);
   } catch (error) {
+    store.$state.shouldDisplayInformation = false;
     toast({
       title: `An error occured: ${error}`,
       variant: 'destructive',

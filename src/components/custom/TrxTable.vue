@@ -9,7 +9,7 @@
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow v-if="wax.id.value.length > 0">
+      <TableRow v-if="wax.id.value.length > 0 && wax.shouldDisplayInformation.value">
         <TableCell>
           <span class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer" @click="waxStore.copy(wax.id.value)">
             <span class="inline-flex items-center">
