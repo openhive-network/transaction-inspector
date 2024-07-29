@@ -89,29 +89,39 @@ class WaxAccountInformations {
     expectedAuthorityLevel: EAuthorityLevel,
     transaction: ApiTransaction
   ): Promise<boolean | undefined> {
-    const accounts = await this.accountToCheck(expectedSigner);
+    const { accounts } = await this.accountToCheck(expectedSigner);
     const keys = await this.getNormalizeKeysFor(transaction);
 
-    for (let i = 0; i < accounts.accounts.length; ++i) {
-      let authorityToVerify: ApiAuthority;
-      const account = accounts.accounts[i];
+    if (keys.length === 0)
+      throw new Error('Expected signer must have at least one key, but got no keys.');
 
-      switch (expectedAuthorityLevel) {
-        case EAuthorityLevel.POSTING:
-          authorityToVerify = account.posting;
-          break;
-        case EAuthorityLevel.ACTIVE:
-          authorityToVerify = account.active;
-          break;
-        case EAuthorityLevel.OWNER:
-          authorityToVerify = account.owner;
-          break;
-        default:
-          throw new Error('Invalid authority level');
-      }
+    if (accounts.length !== 1)
+      throw new Error('Expected signer must be a single account, but got no/multiple accounts.');
 
-      for (let i = 0; i < keys.length; ++i) return authorityToVerify.key_auths.some((auth: ApiKeyAuth) => auth['0'] === keys[i]);
+    const [ account ] = accounts;
+
+    let authorityToVerify: ApiAuthority;
+
+    switch (expectedAuthorityLevel) {
+      case EAuthorityLevel.POSTING:
+        authorityToVerify = account.posting;
+        break;
+      case EAuthorityLevel.ACTIVE:
+        authorityToVerify = account.active;
+        break;
+      case EAuthorityLevel.OWNER:
+        authorityToVerify = account.owner;
+        break;
+      default:
+        throw new Error('Invalid authority level');
     }
+
+    let direct = true;
+
+    for (const key of keys)
+      direct &&= authorityToVerify.key_auths.some((auth: ApiKeyAuth) => auth['0'] === key);
+
+    return direct;
   }
 
   async getAccountsKeyReferencesFor(transaction: ApiTransaction): Promise<string> {
@@ -120,7 +130,7 @@ class WaxAccountInformations {
     const mappedKeys = await this.getNormalizeKeysFor(transaction);
     const accountsByRefs = (await this.chain.api.account_by_key_api.get_key_references({ keys: mappedKeys })).accounts;
 
-    const accounts = new Array<string[]>(...accountsByRefs);
+    const accounts = [ ...accountsByRefs ];
 
     return accounts.join(',');
   }
