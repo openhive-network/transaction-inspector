@@ -85,15 +85,12 @@ class WaxAccountInformations {
   }
 
   async isDirectlySigned(
+    transaction: ApiTransaction,
     expectedSigner: TAccountName,
-    expectedAuthorityLevel: EAuthorityLevel,
-    transaction: ApiTransaction
-  ): Promise<boolean | undefined> {
+    expectedAuthorityLevel: EAuthorityLevel
+  ): Promise<boolean> {
+    const signedBy = await this.getAccountsKeyReferencesFor(transaction);
     const { accounts } = await this.accountToCheck(expectedSigner);
-    const keys = await this.getNormalizeKeysFor(transaction);
-
-    if (keys.length === 0)
-      throw new Error('Expected signer must have at least one key, but got no keys.');
 
     if (accounts.length !== 1)
       throw new Error('Expected signer must be a single account, but got no/multiple accounts.');
@@ -118,10 +115,10 @@ class WaxAccountInformations {
 
     let direct = true;
 
-    for (const key of keys)
-      direct &&= authorityToVerify.key_auths.some((auth: ApiKeyAuth) => auth['0'] === key);
+    if (authorityToVerify.account_auths.length === 0)
+      return direct;
 
-    return direct;
+    return direct &&= authorityToVerify.account_auths.some((accAuth: ApiKeyAuth) => accAuth['0'] === signedBy);
   }
 
   async getAccountsKeyReferencesFor(transaction: ApiTransaction): Promise<string> {
