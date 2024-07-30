@@ -21,31 +21,53 @@
       <TableBody>
         <TableRow v-if="wax.keys.value.length > 0 && wax.shouldDisplayInformation.value">
           <TableCell>
-            <span
-              v-for="(signature, index) in wax.signatures.value"
-              :key="index"
-              class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-              @click="waxStore.copy(signature)">
-              <span class="inline-flex items-center">
-                {{ `${signature.slice(0, 5)}...${signature.slice(-5)}\n` }}
-                <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
-              </span>
-              <hr v-if="wax.signatures.value.length > 1" class="my-3" />
-            </span>
+            <TooltipWorker>
+              <template #trigger>
+                <span
+                  v-for="(signature, index) in wax.signatures.value"
+                  :key="index"
+                  class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
+                  @click="waxStore.copy(signature)">
+                  <span class="inline-flex items-center">
+                    {{ `${signature.slice(0, 5)}...${signature.slice(-5)}\n` }}
+                    <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
+                  </span>
+                  <hr v-if="wax.signatures.value.length > 1" class="my-3" />
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Signatures</span>
+                  <hr class="my-2" />
+                  <span v-for="(signature, index) in wax.signatures.value" :key="index">{{ signature }}</span>
+                </div>
+              </template>
+            </TooltipWorker>
           </TableCell>
           <TableCell>{{ wax.pack.value }}</TableCell>
           <TableCell>
-            <span
-              v-for="(key, index) in wax.keys.value"
-              :key="index"
-              class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
-              @click="waxStore.copy(key)">
-              <span class="inline-flex items-center">
-                {{ `${key.slice(0, 5)}...${key.slice(-5)}\n` }}
-                <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
-              </span>
-              <hr v-if="wax.keys.value.length > 1" class="my-3" />
-            </span>
+            <TooltipWorker>
+              <template #trigger>
+                <span
+                  v-for="(key, index) in wax.keys.value"
+                  :key="index"
+                  class="inline-flex transition-colors p-3 rounded-lg hover:bg-accent hover:cursor-pointer"
+                  @click="waxStore.copy(key)">
+                  <span class="inline-flex items-center">
+                    {{ `${key.slice(0, 5)}...${key.slice(-5)}\n` }}
+                    <svg-icon class="ml-2" type="mdi" :path="mdiClipboardMultipleOutline" width="16" height="16" />
+                  </span>
+                  <hr v-if="wax.keys.value.length > 1" class="my-3" />
+                </span>
+              </template>
+              <template #content>
+                <div class="flex flex-col">
+                  <span class="text-lg">Public keys</span>
+                  <hr class="my-2" />
+                  <span v-for="(key, index) in wax.keys.value" :key="index">{{ key }}</span>
+                </div>
+              </template>
+            </TooltipWorker>
           </TableCell>
           <TableCell
             v-if="typeof wax.accountsAuth.value !== 'undefined' && wax.accountsAuth.value.length !== 0"
@@ -74,6 +96,7 @@
 <script setup lang="ts">
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
+import TooltipWorker from './TooltipWorker.vue';
 import { useWaxStore } from '@/store/wax';
 import { mdiClipboardMultipleOutline, mdiCheck, mdiClose, mdiOpenInNew } from '@mdi/js';
 // @ts-expect-error Missing declaration files
