@@ -78,14 +78,16 @@
             <hr v-if="wax.accountsAuth.value.length > 1" class="my-3" />
           </TableCell>
           <TableCell v-else>...</TableCell>
-          <TableCell class="flex justify-between items-center">
-            <a
-              :href="`https://explore.openhive.network/@${wax.signedBy.value}`"
-              target="_blank"
-              class="inline-flex items-center transition-colors p-3 rounded-lg hover:bg-accent">
-              {{ `@${wax.signedBy.value}` }} <svg-icon class="ml-2" type="mdi" :path="mdiOpenInNew" width="16" height="16" />
-            </a>
-            <svg-icon type="mdi" :path="wax.isDirectlySigned.value ? mdiCheck : mdiClose" width="16" height="16" />
+          <TableCell>
+            <span class="flex justify-between items-center">
+              <a
+                :href="`https://explore.openhive.network/@${wax.signedBy.value}`"
+                target="_blank"
+                class="inline-flex items-center transition-colors p-3 rounded-lg hover:bg-accent">
+                {{ `@${wax.signedBy.value}` }} <svg-icon class="ml-2" type="mdi" :path="mdiOpenInNew" width="16" height="16" />
+              </a>
+              <svg-icon type="mdi" :path="wax.isDirectlySigned.value ? mdiCheck : mdiClose" width="16" height="16" />
+            </span>
           </TableCell>
         </TableRow>
       </TableBody>
