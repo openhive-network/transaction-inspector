@@ -1,6 +1,6 @@
 # Transaction inspector
 
-This app allows to check all importnat informations about your transaction, like `id`, `sig digest`, `public keys` etc.
+This app allows to check all important information about your transaction, like `id`, `sig digest`, `public keys` etc.
 
 ## Project Setup
 
