@@ -6,7 +6,8 @@ class WaxAccountInformations {
   private chain!: IHiveChainInterface;
 
   private async requireChain(): Promise<void> {
-    if (typeof this.chain === 'undefined') this.chain = await createHiveChain();
+    if (typeof this.chain === 'undefined')
+      this.chain = await createHiveChain();
   }
 
   async getPackTypeFor(transaction: ApiTransaction): Promise<EPackType> {
@@ -139,11 +140,15 @@ class WaxAccountInformations {
 
     if (accountToCheck.accounts.length > 0) {
       for (let i = 0; i < transactionKeys.length; ++i) {
-        if (accountToCheck.accounts[i].owner.key_auths[i][0] === transactionKeys[i]) return EAuthorityLevel.OWNER;
-        else if (accountToCheck.accounts[i].active.key_auths[i][0] === transactionKeys[i]) return EAuthorityLevel.ACTIVE;
-        else if (accountToCheck.accounts[i].posting.key_auths[i][0] === transactionKeys[i]) return EAuthorityLevel.POSTING;
+        if (accountToCheck.accounts[i].owner.key_auths[i][0] === transactionKeys[i])
+          return EAuthorityLevel.OWNER;
+        else if (accountToCheck.accounts[i].active.key_auths[i][0] === transactionKeys[i])
+          return EAuthorityLevel.ACTIVE;
+        else if (accountToCheck.accounts[i].posting.key_auths[i][0] === transactionKeys[i])
+          return EAuthorityLevel.POSTING;
       }
     }
+
     return EAuthorityLevel.POSTING;
   }
 
@@ -162,7 +167,8 @@ class WaxAccountInformations {
     const requiredSignatures = await this.getRequiredSignatures(transaction);
 
     for (let i = 0; i < requiredSignatures.length; ++i) {
-      if (accountToCheck.accounts[i].owner.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i])) return EAuthorityLevel.OWNER;
+      if (accountToCheck.accounts[i].owner.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i]))
+        return EAuthorityLevel.OWNER;
       else if (accountToCheck.accounts[i].active.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i]))
         return EAuthorityLevel.ACTIVE;
       else if (accountToCheck.accounts[i].posting.key_auths.some((auth: ApiKeyAuth) => auth['0'] === requiredSignatures[i]))
