@@ -10,7 +10,7 @@
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow v-if="wax.signedBy.value.length > 0 && wax.shouldDisplayInformation.value">
+      <TableRow v-if="wax.signedBy.value.length > 0 && wax.shouldDisplayInformation.value && wax.correctlySigned.value">
         <TableCell>
           <a
             :href="`https://explore.openhive.network/@${wax.signedBy.value}`"

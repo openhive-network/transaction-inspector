@@ -19,7 +19,7 @@
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-if="wax.keys.value.length > 0 && wax.shouldDisplayInformation.value">
+        <TableRow v-if="wax.keys.value.length > 0 && wax.shouldDisplayInformation.value && wax.correctlySigned.value">
           <TableCell>
             <TooltipWorker>
               <template #trigger>

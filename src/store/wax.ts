@@ -38,6 +38,24 @@ export const useWaxStore = defineStore('wax', {
         this.accountName = username;
         this.pack = await wax.getPackTypeFor(transaction);
         this.expectedAuthType = await wax.compareSignatures(username, transaction);
+      } catch (error) {
+        let message = 'Unknown error occurred!';
+
+        const err = error instanceof Error ? error.message : message;
+
+        if (err.includes('!required_active.size()'))
+          message = 'Missing active authority!';
+
+        if (err.includes('!required_posting.size()'))
+          message = 'Missing posting authority!';
+
+        if (err.includes('!required_owner.size()'))
+          message = 'Missing owner authority!';
+
+        toast({
+          title: message,
+          variant: 'destructive',
+        });
       } finally {
         this.isLoading = false;
       }

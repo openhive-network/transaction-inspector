@@ -93,8 +93,11 @@ class WaxAccountInformations {
     const signedBy = await this.getAccountsKeyReferencesFor(transaction);
     const { accounts } = await this.accountToCheck(expectedSigner);
 
+    if (accounts.length === 0)
+      throw new Error('Provided account is not valid for given transaction or does not exist');
+
     if (accounts.length !== 1)
-      throw new Error('Expected signer must be a single account, but got no/multiple accounts.');
+      throw new Error('Expected signer must be a single account');
 
     const [ account ] = accounts;
 
