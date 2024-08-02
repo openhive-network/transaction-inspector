@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@hiveio/wax':
-        specifier: 1.27.6-rc1-240719111122
-        version: 1.27.6-rc1-240719111122
+        specifier: 1.27.6-rc1-stable.240731102828
+        version: 1.27.6-rc1-stable.240731102828
       '@jamescoyle/vue-icon':
         specifier: ^0.1.2
         version: 0.1.2
@@ -269,8 +269,8 @@ packages:
     resolution: {integrity: sha512-Kun/bWZ36lc5nZY3IZkg9AdqbIPFqW0RoJDrAVtC3GNxrUTxwJh8UWldmRrjGQKnJS8VXvsRxK+8QhZIZIjDMA==, tarball: https://registry.npmjs.org/@hiveio/beekeeper/-/beekeeper-1.27.6-rc2.tgz}
     engines: {node: '>= 18'}
 
-  '@hiveio/wax@1.27.6-rc1-240719111122':
-    resolution: {integrity: sha1-6uRt4H4ZD9emhiM0U6kijBc481Y=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc1-240719111122.tgz}
+  '@hiveio/wax@1.27.6-rc1-stable.240731102828':
+    resolution: {integrity: sha1-xdmkgwiHKN/2TOkfQYweAws/8OI=, tarball: https://gitlab.syncad.com/api/v4/projects/419/packages/npm/@hiveio/wax/-/@hiveio/wax-1.27.6-rc1-stable.240731102828.tgz}
     engines: {node: '>= 18'}
 
   '@internationalized/date@3.5.2':
@@ -1244,7 +1244,7 @@ snapshots:
 
   '@hiveio/beekeeper@1.27.6-rc2': {}
 
-  '@hiveio/wax@1.27.6-rc1-240719111122':
+  '@hiveio/wax@1.27.6-rc1-stable.240731102828':
     dependencies:
       '@hiveio/beekeeper': 1.27.6-rc2
       class-transformer: 0.5.1

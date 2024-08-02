@@ -28,16 +28,16 @@ class WaxAccountInformations {
     await this.requireChain();
 
     return (await this.getPackTypeFor(transaction)) === EPackType.HF26
-      ? this.chain.TransactionBuilder.fromApi(transaction).id
-      : this.chain.TransactionBuilder.fromApi(transaction).legacy_id;
+      ? this.chain.Transaction.fromApi(transaction).id
+      : this.chain.Transaction.fromApi(transaction).legacy_id;
   }
 
   async getSigDigestFor(transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
 
     return (await this.getPackTypeFor(transaction)) === EPackType.HF26
-      ? this.chain.TransactionBuilder.fromApi(transaction).sigDigest
-      : this.chain.TransactionBuilder.fromApi(transaction).legacy_sigDigest;
+      ? this.chain.Transaction.fromApi(transaction).sigDigest
+      : this.chain.Transaction.fromApi(transaction).legacy_sigDigest;
   }
 
   async getNormalizeKeysFor(transaction: ApiTransaction): Promise<string[]> {
@@ -47,8 +47,8 @@ class WaxAccountInformations {
 
     return (
       pack === EPackType.HF26
-        ? this.chain.TransactionBuilder.fromApi(transaction).signatureKeys
-        : this.chain.TransactionBuilder.fromApi(transaction).legacy_signatureKeys
+        ? this.chain.Transaction.fromApi(transaction).signatureKeys
+        : this.chain.Transaction.fromApi(transaction).legacy_signatureKeys
     ).map(key => (key.startsWith('STM') ? `${key}` : `STM${key}`));
   }
 
