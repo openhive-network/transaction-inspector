@@ -8,6 +8,8 @@ export const useWaxStore = defineStore('wax', {
   state: () => ({
     keys: [] as string[],
     accountsAuth: [] as string[][] | undefined,
+    authWeight: 0 as number | undefined,
+    weightThreshold: 0 as number | undefined,
     authType: EAuthorityLevel.POSTING,
     signedBy: '',
     signatures: [] as string[],
@@ -19,7 +21,9 @@ export const useWaxStore = defineStore('wax', {
     isDirectlySigned: false as boolean | undefined,
     expectedAuthType: '',
     isLoading: false,
-    shouldDisplayInformation: false
+    shouldDisplayInformation: false,
+    entireRequiredThreshold: 0,
+    enitreAuthsWeight: 0
   }),
 
   actions: {
@@ -28,6 +32,8 @@ export const useWaxStore = defineStore('wax', {
         this.isLoading = true;
         this.keys = await wax.getNormalizeKeysFor(transaction);
         this.accountsAuth = await wax.getAccountAuthsFor(username);
+        this.authWeight = await wax.getAuthorityWeightFor(username, this.keys);
+        this.weightThreshold = await wax.getWeightThresholdFor(username, this.keys);
         this.signedBy = await wax.getAccountsKeyReferencesFor(transaction);
         this.authType = await wax.getAuthorityTypeFor(this.signedBy, this.keys);
         this.signatures = wax.getSignaturesFor(transaction);
@@ -38,6 +44,15 @@ export const useWaxStore = defineStore('wax', {
         this.accountName = username;
         this.pack = await wax.getPackTypeFor(transaction);
         this.expectedAuthType = await wax.compareSignatures(username, transaction);
+
+        if (this.weightThreshold)
+          this.entireRequiredThreshold += this.weightThreshold;
+
+        if (this.authWeight)
+          this.enitreAuthsWeight += this.authWeight;
+
+        if (this.enitreAuthsWeight < this.entireRequiredThreshold)
+          throw new Error('Not enough weight to sign this transaction!');
       } catch (error) {
         let message = 'Unknown error occurred!';
 

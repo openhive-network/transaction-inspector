@@ -155,6 +155,40 @@ class WaxAccountInformations {
     return EAuthorityLevel.POSTING;
   }
 
+  async getAuthorityWeightFor(account: string, transactionKeys: string[]): Promise<number | undefined> {
+    await this.requireChain();
+
+    const { accounts } = await this.accountToCheck(account);
+
+    if (accounts.length === 0)
+      throw new Error('Provided account is not valid for given transaction or does not exist');
+
+    for (let i = 0; i < transactionKeys.length; ++i)
+      if (accounts[i].owner.key_auths[i][0] === transactionKeys[i])
+        return accounts[i].owner.key_auths[i][1];
+      else if (accounts[i].active.key_auths[i][0] === transactionKeys[i])
+        return accounts[i].active.key_auths[i][1];
+      else if (accounts[i].posting.key_auths[i][0] === transactionKeys[i])
+        return accounts[i].posting.key_auths[i][1];
+  }
+
+  async getWeightThresholdFor(account: string, transactionKeys: string[]): Promise<number | undefined> {
+    await this.requireChain();
+
+    const { accounts } = await this.accountToCheck(account);
+
+    if (accounts.length === 0)
+      throw new Error('Provided account is not valid for given transaction or does not exist');
+
+    for (let i = 0; i < transactionKeys.length; ++i)
+      if (accounts[i].owner.key_auths[i][0] === transactionKeys[i])
+        return accounts[i].owner.weight_threshold;
+      else if (accounts[i].active.key_auths[i][0] === transactionKeys[i])
+        return accounts[i].active.weight_threshold;
+      else if (accounts[i].posting.key_auths[i][0] === transactionKeys[i])
+        return accounts[i].posting.weight_threshold;
+  }
+
   async getRequiredSignatures(transaction: ApiTransaction): Promise<string[]> {
     const transactionKeys = await this.getNormalizeKeysFor(transaction);
     return (

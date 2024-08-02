@@ -8,6 +8,7 @@
           <TableHead class="text-lg">Pack</TableHead>
           <TableHead class="text-lg">Public key</TableHead>
           <TableHead class="text-lg">Account auths</TableHead>
+          <TableHead class="text-lg">Authority weight</TableHead>
           <TableHead class="text-lg text-center">
             Authorities
             <hr class="my-2" />
@@ -78,6 +79,9 @@
             <hr v-if="wax.accountsAuth.value.length > 1" class="my-3" />
           </TableCell>
           <TableCell v-else>...</TableCell>
+          <TableCell class="text-center">
+            <span>{{ wax.authWeight.value }}</span>
+          </TableCell>
           <TableCell>
             <span class="flex justify-between items-center">
               <a

@@ -6,6 +6,7 @@
       <TableRow>
         <TableHead>Authority account</TableHead>
         <TableHead>Authority type</TableHead>
+        <TableHead>Threshold</TableHead>
         <TableHead>Satisfied</TableHead>
       </TableRow>
     </TableHeader>
@@ -19,12 +20,22 @@
             {{ `@${wax.signedBy.value}` }} <svg-icon class="ml-2" type="mdi" :path="mdiOpenInNew" width="16" height="16" />
           </a>
         </TableCell>
-        <TableCell>
-          <div>{{ wax.authType.value }}</div>
+        <TableCell class="text-center">
+          <span>{{ wax.authType.value }}</span>
+        </TableCell>
+        <TableCell class="text-center">
+          <span>{{ wax.weightThreshold }}</span>
         </TableCell>
         <TableCell>
           <div class="flex justify-center">
-            <svg-icon type="mdi" :path="wax.authType.value === wax.expectedAuthType.value ? mdiCheck : mdiClose" width="16" height="16" />
+            <svg-icon
+              type="mdi"
+              :path="
+                ( wax.authType.value === wax.expectedAuthType.value && wax.enitreAuthsWeight >= wax.entireRequiredThreshold )
+                  ? mdiCheck
+                  : mdiClose"
+                width="16"
+                height="16" />
           </div>
         </TableCell>
       </TableRow>
