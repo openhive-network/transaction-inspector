@@ -11,7 +11,7 @@ export const useWaxStore = defineStore('wax', {
     authWeight: 0 as number | undefined,
     weightThreshold: 0 as number | undefined,
     authType: EAuthorityLevel.POSTING,
-    signedBy: '',
+    signedBy: [] as string[][],
     signatures: [] as string[],
     correctlySigned: false,
     pack: EPackType.HF26,
@@ -27,23 +27,23 @@ export const useWaxStore = defineStore('wax', {
   }),
 
   actions: {
-    async getEntireWaxInformations(wax: TWaxAccountInformations, transaction: ApiTransaction, username: string): Promise<void> {
+    async getEntireWaxInformations(wax: TWaxAccountInformations, transaction: ApiTransaction): Promise<void> {
       try {
         this.isLoading = true;
         this.keys = await wax.getNormalizeKeysFor(transaction);
-        this.accountsAuth = await wax.getAccountAuthsFor(username);
-        this.authWeight = await wax.getAuthorityWeightFor(username, this.keys);
-        this.weightThreshold = await wax.getWeightThresholdFor(username, this.keys);
+        this.accountsAuth = await wax.getAccountAuths(transaction);
+        this.authWeight = await wax.getAuthorityWeightFor(transaction, this.keys);
+        this.weightThreshold = await wax.getWeightThresholdFor(transaction, this.keys);
         this.signedBy = await wax.getAccountsKeyReferencesFor(transaction);
-        this.authType = await wax.getAuthorityTypeFor(this.signedBy, this.keys);
+        this.authType = await wax.getAuthorityTypeFor(transaction, this.keys);
         this.signatures = wax.getSignaturesFor(transaction);
         this.correctlySigned = await wax.checkVerifyAuthorityFor(transaction);
-        this.isDirectlySigned = await wax.isDirectlySigned(transaction, username, this.authType);
+        this.isDirectlySigned = await wax.isDirectlySigned(transaction, this.authType);
         this.id = await wax.getTransactionIdFor(transaction);
         this.sigDigest = await wax.getSigDigestFor(transaction);
-        this.accountName = username;
+        this.accountName = (await wax.accountToCheck(transaction)).accounts[0].name;
         this.pack = await wax.getPackTypeFor(transaction);
-        this.expectedAuthType = await wax.compareSignatures(username, transaction);
+        this.expectedAuthType = await wax.compareSignatures(transaction);
 
         if (this.weightThreshold)
           this.entireRequiredThreshold += this.weightThreshold;
@@ -54,21 +54,8 @@ export const useWaxStore = defineStore('wax', {
         if (this.enitreAuthsWeight < this.entireRequiredThreshold)
           throw new Error('Not enough weight to sign this transaction!');
       } catch (error) {
-        let message = 'Unknown error occurred!';
-
-        const err = error instanceof Error ? error.message : message;
-
-        if (err.includes('!required_active.size()'))
-          message = 'Missing active authority!';
-
-        if (err.includes('!required_posting.size()'))
-          message = 'Missing posting authority!';
-
-        if (err.includes('!required_owner.size()'))
-          message = 'Missing owner authority!';
-
         toast({
-          title: message,
+          title: error as string,
           variant: 'destructive',
         });
       } finally {

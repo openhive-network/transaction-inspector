@@ -6,7 +6,7 @@
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Check your transaction</DialogTitle>
-        <DialogDescription>Simply paste your username and transaction.</DialogDescription>
+        <DialogDescription>Simply paste your transaction JSON.</DialogDescription>
       </DialogHeader>
       <Form class="mt-4" />
     </DialogContent>

@@ -13,12 +13,16 @@
     <TableBody>
       <TableRow v-if="wax.signedBy.value.length > 0 && wax.shouldDisplayInformation.value && wax.correctlySigned.value">
         <TableCell>
-          <a
-            :href="`https://explore.openhive.network/@${wax.signedBy.value}`"
-            target="_blank"
-            class="inline-flex items-center p-3 transition-colors rounded-lg hover:bg-accent">
-            {{ `@${wax.signedBy.value}` }} <svg-icon class="ml-2" type="mdi" :path="mdiOpenInNew" width="16" height="16" />
-          </a>
+          <p>
+            <a
+              v-for="(signer, index) in wax.signedBy.value"
+              :key="index"
+              :href="`https://explore.openhive.network/@${signer[0]}`"
+              target="_blank"
+              class="flex items-center p-3 transition-colors rounded-lg hover:bg-accent">
+              {{ `@${signer[0]}\n` }} <svg-icon class="ml-2" type="mdi" :path="mdiOpenInNew" width="16" height="16" />
+            </a>
+          </p>
         </TableCell>
         <TableCell class="text-center">
           <span>{{ wax.authType.value }}</span>
