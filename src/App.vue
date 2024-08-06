@@ -8,19 +8,19 @@
           <CardDescription class="mt-2">Check in easy and fast way all information about your transaction.</CardDescription>
         </div>
       </div>
-      <div v-if="wax.signatures.value.length > 0 && wax.shouldDisplayInformation.value" class="hidden md:block">
-        <Skeleton v-if="wax.isLoading.value" class="h-[50px] w-[50px] rounded-xl" />
-        <span v-else :class="`flex items-center text-lg ${wax.correctlySigned.value ? 'text-green60' : 'text-destructive'}`">
-          <svg-icon type="mdi" :path="wax.correctlySigned.value ? mdiCheck : mdiClose" width="24" height="24" class="mr-2" />
-          {{ wax.correctlySigned.value ? 'valid' : 'invalid' }}
+      <div v-if="store.signatures.value.length > 0 && store.shouldDisplayInformation.value" class="hidden md:block">
+        <Skeleton v-if="store.isLoading.value" class="h-[50px] w-[50px] rounded-xl" />
+        <span v-else :class="`flex items-center text-lg ${store.correctlySigned.value ? 'text-green60' : 'text-destructive'}`">
+          <svg-icon type="mdi" :path="store.correctlySigned.value ? mdiCheck : mdiClose" width="24" height="24" class="mr-2" />
+          {{ store.correctlySigned.value ? 'valid' : 'invalid' }}
         </span>
       </div>
       <TrxDialog />
-      <div v-if="wax.signatures.value.length > 0" class="mt-6 lg:mt-0 md:hidden">
-        <Skeleton v-if="wax.isLoading.value" class="h-[50px] w-[50px] rounded-xl" />
-        <span v-else :class="`flex items-center text-lg ${wax.correctlySigned.value ? 'text-green60' : 'text-destructive'}`">
-          <svg-icon type="mdi" :path="wax.correctlySigned.value ? mdiCheck : mdiClose" width="24" height="24" class="mr-2" />
-          {{ wax.correctlySigned.value ? 'valid' : 'invalid' }}
+      <div v-if="store.signatures.value.length > 0" class="mt-6 lg:mt-0 md:hidden">
+        <Skeleton v-if="store.isLoading.value" class="h-[50px] w-[50px] rounded-xl" />
+        <span v-else :class="`flex items-center text-lg ${store.correctlySigned.value ? 'text-green60' : 'text-destructive'}`">
+          <svg-icon type="mdi" :path="store.correctlySigned.value ? mdiCheck : mdiClose" width="24" height="24" class="mr-2" />
+          {{ store.correctlySigned.value ? 'valid' : 'invalid' }}
         </span>
       </div>
     </CardHeader>
@@ -46,7 +46,23 @@ import { mdiCheck, mdiClose } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
 import { storeToRefs } from 'pinia';
 import { useWaxStore } from './store/wax';
+import { inject, watch } from 'vue';
+import type { TWaxAccountInformations } from './plugins/wax';
+import { useRoute } from 'vue-router';
 
 const waxStore = useWaxStore();
-const wax = storeToRefs(waxStore);
+const store = storeToRefs(waxStore);
+const wax = inject<TWaxAccountInformations>('wax')!;
+
+const route = useRoute();
+
+watch(() => route.params.id, async () => {
+  if ('id' in route.params)
+    waxStore.$state.transactionIdFromUrl = route.params.id as string;
+  else
+    waxStore.$state.transactionIdFromUrl = '';
+
+  if (store.transactionIdFromUrl.value !== '')
+    await waxStore.getTransactionFromUrlId(wax);
+});
 </script>

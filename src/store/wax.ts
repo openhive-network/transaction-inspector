@@ -23,7 +23,9 @@ export const useWaxStore = defineStore('wax', {
     isLoading: false,
     shouldDisplayInformation: false,
     entireRequiredThreshold: 0,
-    enitreAuthsWeight: 0
+    enitreAuthsWeight: 0,
+    transactionIdFromUrl: '',
+    transaction: undefined as unknown as ApiTransaction,
   }),
 
   actions: {
@@ -77,5 +79,22 @@ export const useWaxStore = defineStore('wax', {
         });
       }
     },
+
+    async getTransactionFromUrlId(wax: TWaxAccountInformations): Promise<void> {
+      try {
+        this.shouldDisplayInformation = true;
+
+        if (this.transactionIdFromUrl !== '') {
+          this.transaction = await wax.getTransactionFromUrlId(this.transactionIdFromUrl);
+          await this.getEntireWaxInformations(wax, this.transaction);
+        }
+      } catch (error) {
+        this.shouldDisplayInformation = false;
+        toast({
+          title: error as string,
+          variant: 'destructive',
+        });
+      }
+    }
   },
 });

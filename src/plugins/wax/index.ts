@@ -1,5 +1,5 @@
 import { ApiAuthority, ApiKeyAuth, ApiTransaction, type IHiveChainInterface, createHiveChain } from '@hiveio/wax';
-import { EAuthorityLevel, EPackType, type IAccountType, type TRequiredSignatures, type TVerifyAuthority } from './types.js';
+import { EAuthorityLevel, EPackType, type TGetTransaction, type IAccountType, type TRequiredSignatures, type TVerifyAuthority } from './types.js';
 import type { App } from 'vue';
 
 class WaxAccountInformations {
@@ -98,7 +98,7 @@ class WaxAccountInformations {
     const { accounts } = await this.accountToCheck(transaction);
 
     if (accounts.length === 0)
-      throw new Error('Provided account is not valid for given transaction or does not exist');
+      throw new Error('Cannot find any account connected to the key from this transaction ');
 
     if (accounts.length !== 1)
       throw new Error('Expected signer must be a single account');
@@ -140,8 +140,6 @@ class WaxAccountInformations {
 
     const accounts = [ ...accountsByRefs ];
 
-    console.log(accounts);
-
     return accounts;
   }
 
@@ -169,10 +167,8 @@ class WaxAccountInformations {
 
     const { accounts } = await this.accountToCheck(transaction);
 
-    console.log(accounts);
-
     if (accounts.length === 0)
-      throw new Error('Provided account is not valid for given transaction or does not exist');
+      throw new Error('Cannot find any account connected to the key from this transaction ');
 
     for (let i = 0; i < transactionKeys.length; ++i)
       if (accounts[i].owner.key_auths[i][0] === transactionKeys[i])
@@ -188,10 +184,8 @@ class WaxAccountInformations {
 
     const { accounts } = await this.accountToCheck(transaction);
 
-    console.log(accounts);
-
     if (accounts.length === 0)
-      throw new Error('Provided account is not valid for given transaction or does not exist');
+      throw new Error('Cannot find any account connected to the key from this transaction ');
 
     for (let i = 0; i < transactionKeys.length; ++i)
       if (accounts[i].owner.key_auths[i][0] === transactionKeys[i])
@@ -214,9 +208,8 @@ class WaxAccountInformations {
 
   async compareSignatures(transaction: ApiTransaction): Promise<EAuthorityLevel> {
     const { accounts } = await this.accountToCheck(transaction);
-    const requiredSignatures = await this.getRequiredSignatures(transaction);
 
-    console.log(accounts);
+    const requiredSignatures = await this.getRequiredSignatures(transaction);
 
     const length = accounts.length - requiredSignatures.length;
 
@@ -237,8 +230,6 @@ class WaxAccountInformations {
 
     const { accounts } = await this.accountToCheck(transaction);
 
-    console.log(accounts);
-
     for (let i = 0; i < accounts.length; ++i) {
       return [
         { type: EAuthorityLevel.OWNER, auths: accounts[i].owner.account_auths },
@@ -248,6 +239,17 @@ class WaxAccountInformations {
         .filter(acc => acc.auths.length > 0)
         .map(acc => acc.auths.map(node => node[0]));
     }
+  }
+
+  async getTransactionFromUrlId(transactionId: string): Promise<ApiTransaction> {
+    await this.requireChain();
+
+    const trx = (await this.chain.extend<TGetTransaction>().api.account_history_api.get_transaction({ id: transactionId }));
+
+    if (typeof trx === 'undefined')
+      throw new Error('Transaction not found');
+
+    return trx;
   }
 }
 

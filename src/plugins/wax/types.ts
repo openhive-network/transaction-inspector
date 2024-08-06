@@ -18,6 +18,14 @@ export interface IRequiredSignaturesResponse {
   keys: string[];
 }
 
+export interface IGetTransactionRequest {
+  id: string;
+}
+
+export interface IGetTransactionResponse {
+  trx: ApiTransaction;
+}
+
 export interface IAccountType {
   accounts: ApiAccount[];
 }
@@ -52,3 +60,9 @@ export type TRequiredSignatures = {
     get_required_signatures: TWaxApiRequest<IRequiredSignaturesRequest, IRequiredSignaturesResponse>;
   };
 };
+
+export type TGetTransaction = {
+  account_history_api: {
+    get_transaction: TWaxApiRequest<IGetTransactionRequest, ApiTransaction>;
+  }
+}

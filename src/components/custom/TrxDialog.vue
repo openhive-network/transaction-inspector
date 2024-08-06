@@ -1,5 +1,5 @@
 <template>
-  <Dialog default-open>
+  <Dialog>
     <DialogTrigger as-child>
       <Button>Provide transaction</Button>
     </DialogTrigger>
