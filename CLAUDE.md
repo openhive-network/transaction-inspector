@@ -11,14 +11,15 @@ Transaction Inspector is a Vue 3 web application for inspecting and validating H
 
 ## Tech Stack
 
-- **Framework**: Vue 3.4 with Composition API (`<script setup>`)
-- **Language**: TypeScript 5.4
+- **Framework**: Vue 3.5 with Composition API (`<script setup>`)
+- **Language**: TypeScript 6.0
 - **Build Tool**: Vite 5.1
-- **Styling**: Tailwind CSS 3.4 with shadcn-vue components (via Radix Vue)
-- **State Management**: Pinia 2.1
-- **Blockchain**: @hiveio/wax 1.27
+- **Styling**: Tailwind CSS 4 (`@tailwindcss/vite`, JS config loaded through `@config`) with shadcn-vue components (via Radix Vue)
+- **State Management**: Pinia 4
+- **Blockchain**: @hiveio/wax 1.28
 - **Form Validation**: VeeValidate + Zod
 - **Package Manager**: pnpm
+- **Versions**: `@hiveio/wax`, Vue, Pinia, vue-tsc, Tailwind and TypeScript are `catalog:` references to common-ci-configuration's pnpm catalogs (`pnpm-workspace.yaml` is a symlink into the `npm-common-config` submodule: `git submodule update --init`). Never pin those packages locally
 
 ## Directory Structure
 
@@ -55,8 +56,8 @@ pnpm type-check       # Run TypeScript checks
 - `src/store/wax.ts` - Pinia store with transaction state and actions
 - `src/plugins/wax/index.ts` - WaxAccountInformations class for blockchain interaction
 - `src/plugins/wax/types.ts` - TypeScript interfaces and enums (EPackType, EAuthorityLevel)
-- `vite.config.ts` - Vite config with `@/` path alias
-- `tailwind.config.js` - Tailwind theme with CSS variables and dark mode
+- `vite.config.ts` - Vite config with `@/` path alias and the Tailwind Vite plugin
+- `tailwind.config.js` - Tailwind theme with CSS variables and dark mode; its `content` globs are the only Tailwind sources (`src/assets/tailwind.css` disables automatic detection)
 - `components.json` - shadcn-vue configuration
 
 ## Coding Conventions
@@ -70,7 +71,8 @@ pnpm type-check       # Run TypeScript checks
 
 ## CI/CD Notes
 
-No dedicated CI/CD configuration. Build pipeline runs via npm scripts:
-- `vue-tsc` for type checking
-- `vite build` for production builds
-- `npm-run-all2` for parallel script execution
+`.gitlab-ci.yml` uses common-ci-configuration's npm templates on its `node-test-tools` image: a frozen `pnpm install`, then
+- `type_check` — `pnpm type-check` (`vue-tsc`)
+- `build` — `pnpm build-only` (`vite build`)
+
+There is no linter and there are no tests.

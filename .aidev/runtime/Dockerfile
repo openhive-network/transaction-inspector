@@ -10,15 +10,11 @@
 #
 # .aidev/runtime/build.sh builds it on the digest node-test-tools:develop names at
 # the time; the result is pinned as `environment.image`. Rebuild it whenever
-# pnpm-lock.yaml changes.
+# pnpm-lock.yaml or the ccc catalog it resolves against changes.
 #
-# At onboarding (2026-10-29) pnpm-lock.yaml names @hiveio/wax
-# 1.27.6-rc1-stable.240731102828, which no registry serves any more (gone from
-# the @hiveio GitLab registry and never on npmjs.org), so a frozen install cannot
-# succeed anywhere. The fetch below tolerates exactly that one 404, leaving the
-# store with whatever it fetched, so the image exists and the suites' `install`
-# case reports the failure. Any other fetch error, and every lockfile without
-# that version, still fails the build.
+# pnpm-workspace.yaml is a symlink into the npm-common-config submodule (ccc's
+# pnpm catalogs); build.sh copies the resolved file, so the `catalog:` references
+# of package.json resolve in the fetch.
 ARG BASE_IMAGE=registry.gitlab.syncad.com/hive/common-ci-configuration/node-test-tools:develop
 FROM ${BASE_IMAGE}
 USER root
@@ -36,9 +32,8 @@ ENV HOME=/tmp \
 RUN mkdir -p /opt/xdg-config/pnpm \
     && printf 'manage-package-manager-versions=false\n' > /opt/xdg-config/pnpm/rc \
     && chmod -R a+rX /opt/xdg-config
-COPY package.json pnpm-lock.yaml .npmrc /tmp/pnpm-fetch/
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc /tmp/pnpm-fetch/
 RUN cd /tmp/pnpm-fetch \
-    && { pnpm fetch 2>&1 | tee /tmp/fetch.log; rc=${PIPESTATUS[0]}; \
-         [ "$rc" -eq 0 ] || grep -qF '@hiveio/wax-1.27.6-rc1-stable.240731102828.tgz: Not Found - 404' /tmp/fetch.log; } \
-    && cd / && rm -rf /tmp/pnpm-fetch /tmp/fetch.log /tmp/.npm /tmp/.cache /tmp/.local \
+    && pnpm fetch \
+    && cd / && rm -rf /tmp/pnpm-fetch /tmp/.npm /tmp/.cache /tmp/.local \
     && chmod -R a+rwX /opt/pnpm-store

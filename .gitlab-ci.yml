@@ -1,0 +1,52 @@
+stages:
+  - build
+
+# AIDEV branches (ai/*, session/*) and pushes to aidev/integration run no
+# pipeline: AIDEV verifies them through .aidev/project.yaml. A pipeline started
+# from the web UI or the API still runs on aidev/integration (e.g. for its MR).
+# The last two rules are the Workflows/Branch-Pipelines template's.
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH =~ /^(ai|session)\//
+      when: never
+    - if: $CI_COMMIT_BRANCH == "aidev/integration" && $CI_PIPELINE_SOURCE !~ /^(web|api)$/
+      when: never
+    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH
+
+include:
+  - project: 'hive/common-ci-configuration'
+    ref: develop
+    file:
+      - '/templates/npm_projects.gitlab-ci.yml'
+
+variables:
+  GIT_DEPTH: 0
+  # npm-common-config is common-ci-configuration, tracked from its develop tip
+  # (--remote) so a ccc catalog bump (pnpm-workspace.yaml is a symlink to its
+  # pnpm-config/pnpm-workspace.yaml) reaches the next pipeline.
+  GIT_SUBMODULE_STRATEGY: recursive
+  GIT_SUBMODULE_UPDATE_FLAGS: --remote
+
+# Both jobs install frozen from pnpm-lock.yaml in .npm_based_job_base's
+# before_script. The repository has no linter and no tests.
+.app_job:
+  extends: .npm_based_job_base
+  stage: build
+  image: "${NODE_TEST_TOOLS_IMAGE}"
+
+type_check:
+  extends: .app_job
+  script:
+    - pnpm type-check
+
+build:
+  extends: .app_job
+  script:
+    - pnpm build-only
+  artifacts:
+    paths:
+      - dist/
+      - pnpm-lock.catalog-refreshed.yaml
+    when: always
+    expire_in: 1 week

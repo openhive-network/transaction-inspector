@@ -19,7 +19,10 @@ cd "$(dirname "$0")/../.."
 REPOSITORY="${AIDEV_RUNTIME_REPOSITORY:-registry.gitlab.syncad.com/hive/transaction-inspector/aidev-tests}"
 BASE_IMAGE="$(sed -n 's/^ARG BASE_IMAGE=//p' .aidev/runtime/Dockerfile)"
 # The files the Dockerfile copies (its build context holds only these).
-CONTEXT_FILES=(package.json pnpm-lock.yaml .npmrc)
+# pnpm-workspace.yaml is a symlink into the npm-common-config submodule: every
+# use below reads the file it resolves to.
+CONTEXT_FILES=(package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc)
+[ -f pnpm-workspace.yaml ] || { echo "pnpm-workspace.yaml does not resolve: git submodule update --init" >&2; exit 1; }
 INPUTS=(.aidev/runtime/Dockerfile "${CONTEXT_FILES[@]}")
 input_hash() {
     local base_digest

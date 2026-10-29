@@ -1,7 +1,7 @@
 import { toast } from '@/components/ui/toast';
 import type { TWaxAccountInformations } from '@/plugins/wax';
 import { EAuthorityLevel, EPackType } from '@/plugins/wax/types';
-import { ApiTransaction } from '@hiveio/wax';
+import type { ApiTransaction } from '@hiveio/wax';
 import { defineStore } from 'pinia';
 
 export const useWaxStore = defineStore('wax', {

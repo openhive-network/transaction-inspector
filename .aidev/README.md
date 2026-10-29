@@ -17,7 +17,9 @@ Task and session branches never reach `aidev/integration` through merge requests
 lands them after its own verification. `aidev/integration` reaches `main` by this project's
 usual process, merge requests included — the platform never merges into any other branch.
 
-This repository has no CI pipeline of its own.
+`.gitlab-ci.yml` runs the same type check and build (`type_check`, `build`) on branch and tag
+pipelines from common-ci-configuration's npm templates; it runs no pipeline for `ai/*`,
+`session/*` or pushes to `aidev/integration`, which the suites below verify instead.
 
 ## Suites run before work lands
 
@@ -46,18 +48,9 @@ This is hive/transaction-inspector, not the newer hive/tx-inspector (a separate 
 
 `.aidev/runtime/Dockerfile` builds on common-ci-configuration's `node-test-tools:develop` (Node
 and pnpm come from there; this repository pins no Node of its own in it) and adds a pnpm store
-filled from `pnpm-lock.yaml` by `pnpm fetch`. Rebuild and re-pin it with
+filled from `pnpm-lock.yaml` by `pnpm fetch`. Dependency versions come from the pnpm catalogs of
+common-ci-configuration (`pnpm-workspace.yaml` is a symlink into the `npm-common-config`
+submodule, which must be checked out). Rebuild and re-pin it with
 `.aidev/runtime/build.sh --push` when the Dockerfile or the files it copies change, or to follow a
-new `node-test-tools:develop`, and put the printed `repo@sha256:…` into `environment.image`.
-
-At onboarding the image's fetch tolerates exactly one missing tarball (below); see the comment
-in the Dockerfile.
-
-## Known state at onboarding (2026-10-29)
-
-- `install` fails, so every slot fails: `pnpm-lock.yaml` names `@hiveio/wax`
-  `1.27.6-rc1-stable.240731102828`, which no registry serves any more (gone from the @hiveio
-  GitLab registry `.npmrc` names, and never on npmjs.org). A frozen install cannot succeed
-  anywhere until the lockfile moves to a published wax; the image then has to be rebuilt and
-  re-pinned. The 208 other packages of the lockfile are in the image's store.
-- `typecheck` and `build` could therefore not be run at onboarding.
+new `node-test-tools:develop` or a new ccc catalog, and put the printed `repo@sha256:…` into
+`environment.image`.

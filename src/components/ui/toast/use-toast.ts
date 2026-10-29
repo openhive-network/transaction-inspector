@@ -1,5 +1,5 @@
 import { computed, ref } from 'vue'
-import type { Component, VNode } from 'vue'
+import type { Component, Ref, VNode } from 'vue'
 import type { ToastProps } from '.'
 
 const TOAST_LIMIT = 3
@@ -72,9 +72,9 @@ function addToRemoveQueue(toastId: string) {
   toastTimeouts.set(toastId, timeout)
 }
 
-const state = ref<State>({
+const state = ref({
   toasts: [],
-})
+}) as Ref<State>
 
 function dispatch(action: Action) {
   switch (action.type) {
