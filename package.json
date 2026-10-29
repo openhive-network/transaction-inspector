@@ -11,33 +11,33 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
-    "@hiveio/wax": "1.27.6-rc1-stable.240731102828",
+    "@hiveio/wax": "catalog:hiveio-toolset",
     "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/js": "^7.4.47",
     "@vee-validate/zod": "^4.12.6",
-    "@vue/composition-api": "^1.7.2",
     "@vueuse/core": "^10.9.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-vue-next": "^0.354.0",
-    "pinia": "^2.1.7",
+    "pinia": "catalog:vue-toolset",
     "radix-vue": "^1.5.1",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "vee-validate": "^4.12.6",
-    "vue": "^3.4.21",
+    "vue": "catalog:vue-toolset",
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "catalog:tailwind-toolset",
     "@tsconfig/node20": "^20.1.2",
     "@types/node": "^20.11.25",
     "@vitejs/plugin-vue": "^5.0.4",
     "@vue/tsconfig": "^0.5.1",
-    "autoprefixer": "^10.4.18",
     "npm-run-all2": "^6.1.2",
-    "tailwindcss": "^3.4.1",
-    "typescript": "~5.4.0",
+    "tailwindcss": "catalog:tailwind-toolset",
+    "typescript": "catalog:typescript-toolset",
     "vite": "^5.1.5",
-    "vue-tsc": "^2.0.6"
-  }
+    "vue-tsc": "catalog:vue-toolset"
+  },
+  "packageManager": "pnpm@10.33.0"
 }

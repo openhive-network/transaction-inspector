@@ -1,4 +1,4 @@
-import { ApiAccount, ApiTransaction, type TWaxApiRequest } from '@hiveio/wax';
+import type { ApiAccount, ApiTransaction, TWaxApiRequest } from '@hiveio/wax';
 
 interface IVerifyAuthorityRequest {
   trx: ApiTransaction;

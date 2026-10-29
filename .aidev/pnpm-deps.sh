@@ -1,9 +1,10 @@
 # Sourced by run-checks.sh from the repository root: bring node_modules up to
-# date with pnpm-lock.yaml from the image's pnpm store, offline and frozen, the
-# way CI installs. A marker records the lockfile and Node it was installed for;
+# date with pnpm-lock.yaml and the ccc catalog of pnpm-workspace.yaml from the
+# image's pnpm store, offline and frozen, the way CI installs. A marker records
+# the lockfile, catalog and Node it was installed for;
 # it is written only after an install that succeeded, and an install whose
 # tools don't resolve is redone.
-lock_id="$(cat package.json pnpm-lock.yaml | sha256sum | cut -d' ' -f1) $(node --version)"
+lock_id="$(cat package.json pnpm-lock.yaml pnpm-workspace.yaml | sha256sum | cut -d' ' -f1) $(node --version)"
 marker=node_modules/.aidev-pnpm-lock
 tools_present() {
     local t
