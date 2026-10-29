@@ -28,3 +28,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# AIDEV suite output (.aidev/run-checks.sh)
+test-results/

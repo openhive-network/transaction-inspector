@@ -1,0 +1,81 @@
+# Profile for hive/transaction-inspector, written by hand after `aidev project scaffold`'s
+# shape (#13561).
+#
+# Schema reference: docs/architecture/project-profile.md
+# Onboarding procedure: the `onboard-external-project` skill.
+# Guide: docs/operations/onboarding-an-external-project.md
+#
+# The generator writes a starting point, not a governed answer: every
+# binding below is the command a maintainer said this project runs, and it
+# is reviewed and edited like any other declaration.
+version: 2
+project: transaction-inspector
+
+gitlab:
+  host: "gitlab.syncad.com"
+  path: "hive/transaction-inspector"
+  id: 463
+
+# A single-branch topology: aidev/integration is what work integrates into;
+# main is what ships, reached from it by merge request.
+branches:
+  integration: "aidev/integration"
+  # main takes merge commits: hand off by merge request from the integration branch.
+  handoff: "main"
+
+# How this project's suites execute (#13892): one kind, stated once.
+# The image is .aidev/runtime/Dockerfile, built and pinned by .aidev/runtime/build.sh.
+environment:
+  kind: "container"
+  image: "registry.gitlab.syncad.com/hive/transaction-inspector/aidev-tests@sha256:0639549772dc9527edb8aae8ec393f2a674fe6f5dda8a7e9fc0b8d06097c4d61"
+  inputs: ["package.json", "pnpm-lock.yaml", ".npmrc"]
+
+issues:
+  intake_label: todo
+  taxonomy: ".aidev/labels.yaml"
+  decompose:
+    # `never` is where an external project starts: nothing marks work
+    # approved on this project's behalf until there is a track record.
+    auto_todo: never
+  # Reports about this project's work are filed against this project.
+  watcher_reports: self
+
+# Verification slots. Each binding is what this project genuinely runs for
+# that slot — never one selection repeated under seven names, which makes
+# seven gates report on the same evidence while claiming to check seven
+# different things. This repository has no CI and no tests: every slot installs
+# (frozen, offline) and runs what package.json's `build` runs — `vue-tsc` and
+# `vite build` — so several slots necessarily repeat that evidence; see
+# .aidev/README.md.
+verification:
+  quick:
+    adapter: command
+    args: [".aidev/run-checks.sh", "quick", "typecheck", "build"]
+    artifacts: ["test-results/quick/"]
+  full:
+    adapter: command
+    args: [".aidev/run-checks.sh", "full", "typecheck", "build"]
+    artifacts: ["test-results/full/"]
+  baseline:
+    adapter: command
+    args: [".aidev/run-checks.sh", "baseline", "typecheck", "build"]
+    artifacts: ["test-results/baseline/"]
+  canary:
+    adapter: command
+    args: [".aidev/run-checks.sh", "canary", "typecheck", "build"]
+    artifacts: ["test-results/canary/"]
+  static:
+    adapter: command
+    args: [".aidev/run-checks.sh", "static", "typecheck"]
+    artifacts: ["test-results/static/"]
+  coverage:
+    adapter: command
+    args: [".aidev/run-checks.sh", "coverage", "typecheck", "build"]
+    artifacts: ["test-results/coverage/"]
+  system:
+    adapter: command
+    args: [".aidev/run-checks.sh", "system", "build"]
+    artifacts: ["test-results/system/"]
+
+# Capability grants for target-side code. Empty until this project needs one.
+capabilities: []
