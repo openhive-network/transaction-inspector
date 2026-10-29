@@ -1,6 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Classes come only from tailwind.config.js `content`: automatic source detection would also scan the npm-common-config submodule. */
+@import 'tailwindcss' source(none);
+
+@config '../../tailwind.config.js';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  /* Tailwind CSS v3's preflight reset the body to html's line-height, overriding base.css; v4's does not. */
+  body {
+    line-height: inherit;
+  }
+
+  /* The browser's table cell padding, which Tailwind CSS v3's preflight kept and v4's resets. */
+  th,
+  td {
+    padding: 1px;
+  }
+
+  /* Tailwind CSS v4 gives buttons `cursor: default`; v3 gave them `pointer`. */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+}
 
 @layer base {
   :root {

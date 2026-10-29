@@ -3,7 +3,7 @@
 #
 #   .aidev/run-checks.sh <suite> <step>...
 #
-# This repository has no CI and no tests (see .aidev/README.md). Every run
+# This repository has no tests and no linter (see .aidev/README.md). Every run
 # first installs node_modules offline and frozen (.aidev/pnpm-deps.sh), one
 # junit case `install`. Steps, each one junit case (its log the failure body):
 #

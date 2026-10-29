@@ -27,8 +27,8 @@ branches:
 # The image is .aidev/runtime/Dockerfile, built and pinned by .aidev/runtime/build.sh.
 environment:
   kind: "container"
-  image: "registry.gitlab.syncad.com/hive/transaction-inspector/aidev-tests@sha256:0639549772dc9527edb8aae8ec393f2a674fe6f5dda8a7e9fc0b8d06097c4d61"
-  inputs: ["package.json", "pnpm-lock.yaml", ".npmrc"]
+  image: "registry.gitlab.syncad.com/hive/transaction-inspector/aidev-tests@sha256:91edf1f42b8e6dd9df0b70f8f1c3f1799c4cdfb990413bda840ab9c9258841d3"
+  inputs: ["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml", ".npmrc"]
 
 issues:
   intake_label: todo
@@ -43,7 +43,7 @@ issues:
 # Verification slots. Each binding is what this project genuinely runs for
 # that slot — never one selection repeated under seven names, which makes
 # seven gates report on the same evidence while claiming to check seven
-# different things. This repository has no CI and no tests: every slot installs
+# different things. This repository has no tests and no linter: every slot installs
 # (frozen, offline) and runs what package.json's `build` runs — `vue-tsc` and
 # `vite build` — so several slots necessarily repeat that evidence; see
 # .aidev/README.md.

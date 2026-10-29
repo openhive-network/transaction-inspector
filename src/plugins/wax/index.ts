@@ -1,4 +1,4 @@
-import { ApiAuthority, ApiKeyAuth, ApiTransaction, type IHiveChainInterface, createHiveChain } from '@hiveio/wax';
+import { type ApiAuthority, type ApiKeyAuth, type ApiTransaction, type IHiveChainInterface, createHiveChain } from '@hiveio/wax';
 import { EAuthorityLevel, EPackType, type IAccountType, type TRequiredSignatures, type TVerifyAuthority } from './types.js';
 import type { App } from 'vue';
 
@@ -28,16 +28,16 @@ class WaxAccountInformations {
     await this.requireChain();
 
     return (await this.getPackTypeFor(transaction)) === EPackType.HF26
-      ? this.chain.Transaction.fromApi(transaction).id
-      : this.chain.Transaction.fromApi(transaction).legacy_id;
+      ? this.chain.createTransactionFromJson(transaction).id
+      : this.chain.createTransactionFromJson(transaction).legacy_id;
   }
 
   async getSigDigestFor(transaction: ApiTransaction): Promise<string> {
     await this.requireChain();
 
     return (await this.getPackTypeFor(transaction)) === EPackType.HF26
-      ? this.chain.Transaction.fromApi(transaction).sigDigest
-      : this.chain.Transaction.fromApi(transaction).legacy_sigDigest;
+      ? this.chain.createTransactionFromJson(transaction).sigDigest
+      : this.chain.createTransactionFromJson(transaction).legacy_sigDigest;
   }
 
   async getNormalizeKeysFor(transaction: ApiTransaction): Promise<string[]> {
@@ -47,8 +47,8 @@ class WaxAccountInformations {
 
     return (
       pack === EPackType.HF26
-        ? this.chain.Transaction.fromApi(transaction).signatureKeys
-        : this.chain.Transaction.fromApi(transaction).legacy_signatureKeys
+        ? this.chain.createTransactionFromJson(transaction).signatureKeys
+        : this.chain.createTransactionFromJson(transaction).legacy_signatureKeys
     ).map(key => (key.startsWith('STM') ? `${key}` : `STM${key}`));
   }
 

@@ -1,4 +1,5 @@
-@import './base.css';
+/* Layered so Tailwind's base styles and utilities still override it, as in Tailwind CSS v3. */
+@import './base.css' layer(base);
 @import './tailwind.css';
 
 #app {
